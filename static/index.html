@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Detector & Locator</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1e1e2f; color: white; text-align: center; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: #2a2a40; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        input[type="file"] { margin: 20px 0; padding: 10px; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        #loader { display: none; margin-top: 20px; font-style: italic; color: #ffcc00; }
+        .verdict { font-size: 24px; font-weight: bold; margin-top: 20px; }
+        .real { color: #00e676; }
+        .fake { color: #ff3d00; }
+        .heatmap-gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px; }
+        .heatmap-card { background: #1e1e2f; padding: 10px; border-radius: 8px; border: 1px solid #444; }
+        .heatmap-card img { max-width: 200px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🕵️ Deepfake Locator</h1>
+    <p>Upload an image or video to detect manipulation and see the heatmap.</p>
+
+    <input type="file" id="mediaInput" accept="image/*,video/*"><br>
+    <button onclick="analyzeMedia()">Analyze Media</button>
+
+    <div id="loader">Scanning faces and generating heatmaps... please wait.</div>
+
+    <div id="resultBox" style="display:none;">
+        <div id="verdictText" class="verdict"></div>
+        <p>Red/Yellow zones indicate AI manipulation.</p>
+        <div class="heatmap-gallery" id="gallery"></div>
+    </div>
+</div>
+
+<script>
+    async function analyzeMedia() {
+        const fileInput = document.getElementById('mediaInput');
+        if (!fileInput.files.length) {
+            alert("Please select a file!");
+            return;
+        }
+
+        // Setup UI
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('resultBox').style.display = 'none';
+        document.getElementById('gallery').innerHTML = '';
+
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+
+        try {
+            // Call the FastAPI backend
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            document.getElementById('loader').style.display = 'none';
+
+            if (data.error) {
+                alert("Error: " + data.error);
+                return;
+            }
+
+            // Display Verdict
+            const verdictEl = document.getElementById('verdictText');
+            verdictEl.innerText = `${data.verdict} (${data.confidence})`;
+            verdictEl.className = `verdict ${data.verdict.toLowerCase()}`;
+            document.getElementById('resultBox').style.display = 'block';
+
+            // Display Heatmap Images
+            const gallery = document.getElementById('gallery');
+            data.heatmaps.forEach((b64Img, index) => {
+                const card = document.createElement('div');
+                card.className = 'heatmap-card';
+                card.innerHTML = `
+                    <p style="margin:5px 0; font-size:12px;">Frame ${index + 1}</p>
+                    <img src="data:image/jpeg;base64,${b64Img}" alt="Heatmap">
+                `;
+                gallery.appendChild(card);
+            });
+
+        } catch (err) {
+            document.getElementById('loader').style.display = 'none';
+            alert("Analysis failed. Ensure the server is running.");
+            console.error(err);
+        }
+    }
+</script>
+
+</body>
+</html>
