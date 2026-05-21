@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Detection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+     <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="/assets/styles.css">
+
+<script src="script.js"></script>
+<script src="/assets/script.js"></script>
+</head>
+<body>
+    <header class="aws-header">
+        <div class="header-container">
+            <div class="header-left">
+                <span class="material-icons logo-icon">security</span>
+                <h1 class="service-name">Detect Before Share: Deepfake Detection</h1>
+            </div>
+            <nav class="header-nav">
+                <button class="nav-btn active" data-section="home">
+                    <span class="material-icons">home</span>
+                    <span>Home</span>
+                </button>
+                <button class="nav-btn" data-section="detection">
+                    <span class="material-icons">analytics</span>
+                    <span>Detection</span>
+                </button>
+                <button class="nav-btn" data-section="dashboard">
+                    <span class="material-icons">dashboard</span>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-btn" data-section="about">
+                    <span class="material-icons">info</span>
+                    <span>About</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="container">
+                <div class="hero-section">
+                    <div class="hero-content">
+                        <h1 class="hero-title"> Deepfake Detection</h1>
+                        <p class="hero-subtitle">Protect against manipulated media with advanced Deep learning technology</p>
+
+                        <div class="upload-card">
+                            <div class="upload-header">
+                                <span class="material-icons">cloud_upload</span>
+                                <h3>Upload Media for Analysis</h3>
+                            </div>
+
+                            <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                                <input type="file" id="fileInput" accept="image/*,video/*" hidden>
+                                <span class="material-icons upload-icon">add_photo_alternate</span>
+                                <p class="upload-text">Click to upload or drag and drop</p>
+                                <p class="upload-subtext">Supports JPG, PNG, MP4 (Max 20MB)</p>
+                            </div>
+
+                            <div class="divider">
+<!--                                <span>or</span>-->
+                            </div>
+
+<!--                            <div class="url-input-group">-->
+<!--                                <input type="url" id="urlInput" class="url-input" placeholder="Enter media URL">-->
+<!--                                <button class="analyze-btn" onclick="analyzeFromUrl()">-->
+<!--                                    <span class="material-icons">search</span>-->
+<!--                                    Analyze-->
+<!--                                </button>-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detection Section -->
+        <section id="detection" class="section">
+            <div class="container">
+                <div class="page-header">
+                    <h2 class="page-title">Media Analysis</h2>
+                    <p class="page-subtitle">Real-time deepfake detection results</p>
+                </div>
+
+                <div class="detection-grid">
+                    <div class="preview-card">
+                        <div class="card-header">
+                            <span class="material-icons">preview</span>
+                            <h3>Media Preview</h3>
+                        </div>
+                        <div id="mediaPreview" class="media-preview">
+                            <div class="empty-state">
+                                <span class="material-icons">image</span>
+                                <p>No media selected</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analysis-card">
+                        <div class="card-header">
+                            <span class="material-icons">analytics</span>
+                            <h3>Analysis Results</h3>
+                        </div>
+
+                        <div class="progress-container" id="progressContainer" style="display: none;">
+                            <div class="progress-wrapper">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFill"></div>
+                                </div>
+                                <div class="progress-text">Analyzing media...</div>
+                            </div>
+                            <div class="loading-spinner"></div>
+                        </div>
+
+                        <div class="result-container" id="resultContainer" style="display: none;">
+                            <div class="result-status" id="resultStatus">
+                                <span class="material-icons result-icon" id="resultIcon">check_circle</span>
+                                <h4 id="resultTitle">Analysis Complete</h4>
+                            </div>
+
+                            <div class="confidence-section">
+                                <div class="confidence-label">
+                                    <span>Confidence Score</span>
+                                    <span id="confidenceText" class="confidence-value">0%</span>
+                                </div>
+                                <div class="confidence-bar">
+                                    <div class="confidence-fill" id="confidenceFill"></div>
+                                </div>
+                            </div>
+
+                            <div class="result-details">
+                                <p id="resultMessage"></p>
+                            </div>
+                        </div>
+
+                        <div class="empty-analysis" id="emptyAnalysis">
+                            <span class="material-icons">pending</span>
+                            <p>Upload media to begin analysis</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section">
+            <div class="container">
+                <div class="page-header">
+                    <h2 class="page-title">Analytics Dashboard</h2>
+                    <p class="page-subtitle">Monitor detection performance and statistics</p>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <span class="material-icons">analytics</span>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value" id="recentDetections">0</div>
+                            <div class="metric-label">Total Detections</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon accuracy">
+                            <span class="material-icons">verified</span>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value">94.2%</div>
+                            <div class="metric-label">Model Accuracy</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon speed">
+                            <span class="material-icons">speed</span>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value" id="avgTime">0.0s</div>
+                            <div class="metric-label">Avg Response Time</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="card-header">
+                        <span class="material-icons">bar_chart</span>
+                        <h3>Detection History</h3>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="detectionChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <div class="page-header">
+                    <h2 class="page-title">About This Service</h2>
+                    <p class="page-subtitle">Learn about our AI-powered deepfake detection technology</p>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <span class="material-icons">psychology</span>
+                        </div>
+                        <h3>AI Model</h3>
+                        <p>EfficientNetB0 architecture trained on Forensic++ dataset for accurate binary classification of authentic vs. manipulated content.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <span class="material-icons">bolt</span>
+                        </div>
+                        <h3>Technology Stack</h3>
+                        <p>FastAPI backend with TensorFlow, modern responsive frontend, and real-time browser extension for comprehensive protection.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <span class="material-icons">shield</span>
+                        </div>
+                        <h3>Ethics & Privacy</h3>
+                        <p>Designed to combat misinformation while respecting user privacy and promoting digital media literacy across platforms.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <span class="material-icons">visibility</span>
+                        </div>
+                        <h3>Transparency</h3>
+                        <p>Confidence scores and explainable AI processes help users understand detection decisions and build trust in results.</p>
+                    </div>
+                </div>
+
+                <div class="team-section">
+                    <div class="page-header">
+                        <h2 class="page-title">Meet Our Team</h2>
+                        <p class="page-subtitle">The experts behind our deepfake detection technology</p>
+                    </div>
+
+                    <div class="team-grid">
+                        <div class="team-card" >
+                            <div class="team-photo">AJ</div>
+                            <h3 class="team-name">Sushant Patil</h3>
+                            <p class="team-role">Lead Developer</p>
+                            <p class="team-bio">Specializes in computer vision and deep learning architectures for media forensics.</p>
+                        </div>
+
+                        <div class="team-card" >
+                            <div class="team-photo">SC</div>
+                            <h3 class="team-name">Anuj Waghmare</h3>
+                            <p class="team-role">Data Scientist</p>
+                            <p class="team-bio">Expert in machine learning model optimization and dataset curation for AI training.</p>
+                        </div>
+
+                        <div class="team-card" >
+                            <div class="team-photo">VR</div>
+                            <h3 class="team-name">Vilas Rathod</h3>
+                            <p class="team-role">Backend Developer</p>
+                            <p class="team-bio">Full-stack developer focused on scalable API design and cloud infrastructure.</p>
+                        </div>
+
+                        <div class="team-card" >
+                            <div class="team-photo">DP</div>
+                            <h3 class="team-name">Devraj Powar</h3>
+                            <p class="team-role">UX Designer</p>
+                            <p class="team-bio">Creates intuitive interfaces that make complex AI technology accessible to everyone.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Alert Modal -->
+    <div id="alertModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <span class="material-icons modal-icon" id="modalIcon">info</span>
+                <button class="modal-close" id="modalClose">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="modal-body" id="alertContent"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

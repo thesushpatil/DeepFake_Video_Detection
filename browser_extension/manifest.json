@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Deepfake Detector and  Analyzer ",
+  "version": "3.0",
+  "description": "Right-click media or click the extension icon to snip and analyze face areas for deepfakes.",
+  "permissions": [
+    "contextMenus",
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "*://*/*",
+    "http://127.0.0.1:8000/*"
+  ],
+  "action": {
+    "default_title": "Select area to analyze (Snipping Tool)"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+   "icons": {
+    "128": "icon.png"
+  }
+}
