@@ -2,7 +2,7 @@
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
         id: "analyze-deepfake",
-        title: "🕵️‍♂️ Analyze for Deepfakes",
+        title: "🕵️ Analyze for Deepfakes",
         contexts: ["image", "video"]
     });
 });
@@ -13,7 +13,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
         const mediaUrl = info.srcUrl;
         const mediaType = info.mediaType;
 
-        // Open loading tab
+        // Store loading state
         chrome.storage.local.set({ analysisState: { status: 'loading', url: mediaUrl } }, () => {
             chrome.tabs.create({ url: "result.html" });
         });
@@ -44,22 +44,12 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     }
 });
 
-// --- 3. HANDLE EXTENSION ICON CLICK (Snipping Tool) ---
-chrome.action.onClicked.addListener((tab) => {
-    chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        files: ['content.js']
-    });
-});
-
-// --- 4. HANDLE SNIPPING TOOL CROP & SEND ---
+// --- 3. HANDLE SNIPPING TOOL CROP & SEND ---
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "capture_area") {
 
-        // Open loading tab
-        chrome.storage.local.set({ analysisState: { status: 'loading' } }, () => {
-            chrome.tabs.create({ url: "result.html" });
-        });
+        // Store loading state
+        chrome.storage.local.set({ analysisState: { status: 'loading' } });
 
         // Capture visible screen
         chrome.tabs.captureVisibleTab(null, { format: "png" }, async (dataUrl) => {
@@ -85,13 +75,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 });
                 const data = await apiResponse.json();
 
-                // Convert crop to Base64 to show it in the results UI
+                // Convert crop to Base64 to show in results
                 const reader = new FileReader();
                 reader.onloadend = function() {
                     chrome.storage.local.set({
                         analysisState: { status: 'success', data: data, originalSnip: reader.result }
                     });
-                }
+                };
                 reader.readAsDataURL(croppedBlob);
 
             } catch (error) {

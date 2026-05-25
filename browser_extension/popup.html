@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Detector</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <span class="material-icons logo-icon">security</span>
+            <h1 class="service-name">Deepfake Detector</h1>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="upload">
+            <span class="material-icons">cloud_upload</span>
+            <span>Upload</span>
+        </button>
+        <button class="tab-btn" data-tab="snip">
+            <span class="material-icons">crop</span>
+            <span>Snip</span>
+        </button>
+        <button class="tab-btn" data-tab="results">
+            <span class="material-icons">analytics</span>
+            <span>Results</span>
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Upload Tab -->
+        <section id="upload" class="tab-panel active">
+            <div class="upload-card">
+                <div class="upload-zone" id="dropZone">
+                    <input type="file" id="fileInput" accept="image/*,video/*,audio/*,.wav,.mp3,.flac,.ogg,.m4a" hidden>
+                    <span class="material-icons upload-icon">add_photo_alternate</span>
+                    <p class="upload-text">Click or drag & drop</p>
+                    <p class="upload-subtext">JPG, PNG, MP4, AVI, MOV, WAV, MP3, FLAC</p>
+                </div>
+
+                <div class="or-divider">
+                    <span>or paste image URL</span>
+                </div>
+
+                <div class="url-input-group">
+                    <input type="url" id="urlInput" class="url-input" placeholder="https://example.com/image.jpg">
+                    <button class="analyze-url-btn" id="analyzeUrlBtn">
+                        <span class="material-icons">search</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Preview Area -->
+            <div class="preview-area" id="previewArea" style="display:none;">
+                <div class="card-header-small">
+                    <span class="material-icons">preview</span>
+                    <span>Preview</span>
+                    <button class="clear-btn" id="clearBtn">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+                <div class="media-preview" id="mediaPreview"></div>
+                <button class="analyze-btn" id="analyzeBtn">
+                    <span class="material-icons">psychology</span>
+                    Analyze for Deepfake
+                </button>
+            </div>
+        </section>
+
+        <!-- Snip Tab -->
+        <section id="snip" class="tab-panel">
+            <div class="snip-card">
+                <div class="snip-illustration">
+                    <span class="material-icons">crop_free</span>
+                </div>
+                <h3>Screen Snip Tool</h3>
+                <p>Select any area on the current webpage to capture and analyze for deepfakes.</p>
+                <button class="snip-btn" id="snipBtn">
+                    <span class="material-icons">crop</span>
+                    Start Snipping
+                </button>
+            </div>
+        </section>
+
+        <!-- Results Tab -->
+        <section id="results" class="tab-panel">
+            <!-- Loading State -->
+            <div class="loading-state" id="loadingState" style="display:none;">
+                <div class="progress-wrapper">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p class="progress-text">Analyzing media with AI...</p>
+                </div>
+                <div class="loading-spinner"></div>
+            </div>
+
+            <!-- Result State -->
+            <div class="result-state" id="resultState" style="display:none;">
+                <div class="verdict-card" id="verdictCard">
+                    <span class="material-icons verdict-icon" id="verdictIcon">verified_user</span>
+                    <h2 class="verdict-text" id="verdictText">REAL</h2>
+                    <p class="confidence-text" id="confidenceText">Confidence: 95.2%</p>
+                </div>
+
+                <div class="confidence-section">
+                    <div class="confidence-label">
+                        <span>Confidence</span>
+                        <span id="confidenceValue">0%</span>
+                    </div>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" id="confidenceFill"></div>
+                    </div>
+                </div>
+
+                <div class="heatmap-section" id="heatmapSection">
+                    <div class="card-header-small">
+                        <span class="material-icons">thermostat</span>
+                        <span>AI Heatmap Analysis</span>
+                    </div>
+                    <p class="heatmap-desc">Red/yellow zones indicate manipulated regions detected by AI.</p>
+                    <div class="heatmap-gallery" id="heatmapGallery"></div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState">
+                <span class="material-icons">pending</span>
+                <p>Upload or snip media to see results</p>
+            </div>
+
+            <!-- Error State -->
+            <div class="error-state" id="errorState" style="display:none;">
+                <span class="material-icons">error_outline</span>
+                <p id="errorMessage">Something went wrong</p>
+                <button class="retry-btn" id="retryBtn">
+                    <span class="material-icons">refresh</span>
+                    Try Again
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <a href="http://127.0.0.1:8000" target="_blank" class="website-link" id="visitWebsite">
+            <span class="material-icons">language</span>
+            <span>Visit Full Website</span>
+            <span class="material-icons" style="font-size:14px;">open_in_new</span>
+        </a>
+    </footer>
+
+    <script src="popup.js"></script>
+</body>
+</html>
