@@ -11,6 +11,14 @@ import numpy as np
 import base64
 import os
 import tempfile
+import subprocess
+
+# Audio deepfake detection imports
+from audio_deepfake.audio_detector import (
+    load_model as load_audio_model,
+    get_feature_extractor,
+    predict as predict_audio
+)
 
 # --- MEDIAPIPE IMPORT FIX ---
 import mediapipe as mp
@@ -30,10 +38,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount the static folder for the frontend HTML
-# Ensure you have a folder named 'static' in the same directory as this file
 os.makedirs("frontend", exist_ok=True)
-# app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.mount("/assets", StaticFiles(directory="frontend"), name="assets")
 
@@ -64,6 +69,18 @@ try:
     print("✅ Model loaded successfully.")
 except Exception as e:
     print(f"⚠️ Error loading weights. Ensure '{MODEL_WEIGHTS_PATH}' exists. Error: {e}")
+
+
+# --- AUDIO DEEPFAKE MODEL LOADING ---
+print("Loading audio deepfake detection model...")
+try:
+    audio_model = load_audio_model()
+    audio_feature_extractor = get_feature_extractor()
+    print("✅ Audio deepfake model loaded successfully.")
+except Exception as e:
+    audio_model = None
+    audio_feature_extractor = None
+    print(f"⚠️ Audio model failed to load. Audio detection disabled. Error: {e}")
 
 
 # --- 2. GRAD-CAM FUNCTIONS ---
@@ -168,6 +185,8 @@ async def predict_media(file: UploadFile = File(...)):
     filename = file.filename.lower()
     predictions = []
     heatmaps = []
+    audio_verdict = None
+    audio_confidence = None
 
     try:
         # IMAGE PROCESSING
@@ -177,6 +196,19 @@ async def predict_media(file: UploadFile = File(...)):
             if score is not None:
                 predictions.append(score)
                 heatmaps.append(b64_img)
+
+        # AUDIO PROCESSING (standalone audio files)
+        elif filename.endswith(('.wav', '.mp3', '.flac', '.ogg', '.m4a')):
+            if audio_model is None:
+                return JSONResponse({"error": "Audio deepfake detection model is not loaded."})
+
+            verdict, confidence = predict_audio(audio_model, audio_feature_extractor, temp_path)
+            return JSONResponse({
+                "status": "success",
+                "media_type": "audio",
+                "verdict": verdict,
+                "confidence": f"{confidence * 100:.2f}%",
+            })
 
         # VIDEO PROCESSING
         elif filename.endswith(('.mp4', '.avi', '.mov')):
@@ -199,6 +231,27 @@ async def predict_media(file: UploadFile = File(...)):
                     break
             cap.release()
 
+            # Also analyze audio track from the video (if audio model is available)
+            if audio_model is not None:
+                audio_temp_path = temp_path + "_audio.wav"
+                try:
+                    # Extract audio from video using ffmpeg
+                    result = subprocess.run(
+                        ["ffmpeg", "-i", temp_path, "-vn", "-acodec", "pcm_s16le",
+                         "-ar", "16000", "-ac", "1", audio_temp_path, "-y"],
+                        capture_output=True, timeout=30
+                    )
+                    if result.returncode == 0 and os.path.exists(audio_temp_path):
+                        audio_verdict, audio_confidence = predict_audio(
+                            audio_model, audio_feature_extractor, audio_temp_path
+                        )
+                except (subprocess.TimeoutExpired, FileNotFoundError):
+                    # ffmpeg not available or timed out — skip audio analysis
+                    pass
+                finally:
+                    if os.path.exists(audio_temp_path):
+                        os.remove(audio_temp_path)
+
         # Generate Final Response
         if not predictions:
             return JSONResponse({"error": "No faces detected in the uploaded media."})
@@ -207,15 +260,31 @@ async def predict_media(file: UploadFile = File(...)):
         is_fake = avg_score > 0.45
         confidence = (avg_score * 100) if is_fake else ((1 - avg_score) * 100)
 
-        return JSONResponse({
+        response_data = {
             "status": "success",
             "verdict": "FAKE" if is_fake else "REAL",
             "confidence": f"{confidence:.2f}%",
             "heatmaps": heatmaps  # List of base64 images
-        })
+        }
+
+        # Include audio analysis if available (for video files)
+        if audio_verdict is not None:
+            response_data["audio_analysis"] = {
+                "verdict": audio_verdict,
+                "confidence": f"{audio_confidence * 100:.2f}%"
+            }
+
+        return JSONResponse(response_data)
 
     except Exception as e:
         return JSONResponse({"error": str(e)})
     finally:
         if os.path.exists(temp_path):
             os.remove(temp_path)  # Clean up temp file
+
+
+# --- Run server directly (works for both localhost and cloud deployment) ---
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 7860))
+    uvicorn.run(app, host="0.0.0.0", port=port)

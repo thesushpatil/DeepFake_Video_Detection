@@ -7,11 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-     <link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="/assets/styles.css">
+     <link rel="stylesheet" href="/assets/styles.css">
 
-<script src="script.js"></script>
-<script src="/assets/script.js"></script>
+<script src="/assets/script.js" defer></script>
 </head>
 <body>
     <header class="aws-header">
@@ -57,10 +55,10 @@
                             </div>
 
                             <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
-                                <input type="file" id="fileInput" accept="image/*,video/*" hidden>
+                                <input type="file" id="fileInput" accept="image/*,video/*,audio/*,.wav,.mp3,.flac,.ogg,.m4a" hidden>
                                 <span class="material-icons upload-icon">add_photo_alternate</span>
                                 <p class="upload-text">Click to upload or drag and drop</p>
-                                <p class="upload-subtext">Supports JPG, PNG, MP4 (Max 20MB)</p>
+                                <p class="upload-subtext">Supports JPG, PNG, MP4, WAV, MP3, FLAC (Max 20MB)</p>
                             </div>
 
                             <div class="divider">
@@ -169,11 +167,21 @@
 
                     <div class="metric-card">
                         <div class="metric-icon accuracy">
-                            <span class="material-icons">verified</span>
+                            <span class="material-icons">warning</span>
                         </div>
                         <div class="metric-content">
-                            <div class="metric-value">94.2%</div>
-                            <div class="metric-label">Model Accuracy</div>
+                            <div class="metric-value" id="fakeCount">0</div>
+                            <div class="metric-label">Fakes Detected</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon" style="background: var(--success);">
+                            <span class="material-icons">verified_user</span>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value" id="realCount">0</div>
+                            <div class="metric-label">Authentic Media</div>
                         </div>
                     </div>
 
@@ -188,13 +196,36 @@
                     </div>
                 </div>
 
+                <!-- Detection History Table -->
                 <div class="chart-card">
                     <div class="card-header">
-                        <span class="material-icons">bar_chart</span>
+                        <span class="material-icons">history</span>
                         <h3>Detection History</h3>
+                        <button class="clear-history-btn" id="clearHistoryBtn" title="Clear History">
+                            <span class="material-icons">delete_sweep</span>
+                            Clear
+                        </button>
                     </div>
-                    <div class="chart-wrapper">
-                        <canvas id="detectionChart" width="400" height="200"></canvas>
+                    <div class="history-table-wrapper" id="historyTableWrapper">
+                        <table class="history-table" id="historyTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>File</th>
+                                    <th>Type</th>
+                                    <th>Verdict</th>
+                                    <th>Confidence</th>
+                                    <th>Time</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyBody">
+                            </tbody>
+                        </table>
+                        <div class="empty-history" id="emptyHistory">
+                            <span class="material-icons">inbox</span>
+                            <p>No detection history yet. Upload media to get started.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -295,6 +326,5 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
 </body>
 </html>
