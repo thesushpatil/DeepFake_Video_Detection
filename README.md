@@ -1,3 +1,13 @@
+---
+title: Deepfake Detection
+emoji: 🛡️
+colorFrom: yellow
+colorTo: red
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # 🎬 DeepFake Video Detection
 
 <div align="center">
