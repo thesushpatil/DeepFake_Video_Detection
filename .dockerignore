@@ -4,9 +4,9 @@ __pycache__/
 audio_deepfake/__pycache__/
 .idea/
 .vscode/
-.gitignore
 DFVD.ipynb
 test_main.http
 browser_extension/
 *.pyc
 *.pyo
+.dockerignore

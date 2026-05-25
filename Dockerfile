@@ -6,26 +6,26 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsndfile1 \
     libgl1-mesa-glx \
     libglib2.0-0 \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
+# Create non-root user (required by HF Spaces)
+RUN useradd -m -u 1000 user
+USER user
+ENV PATH="/home/user/.local/bin:$PATH"
+
 WORKDIR /app
 
-# Copy requirements first (for Docker layer caching)
-COPY requirements.txt .
-
-# Install Python dependencies
+# Copy requirements and install dependencies
+COPY --chown=user ./requirements.txt requirements.txt
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy project files
-COPY main.py .
-COPY frontend/ ./frontend/
-COPY audio_deepfake/ ./audio_deepfake/
-COPY model/ ./model/
+COPY --chown=user . /app
 
-# Expose port (HF Spaces uses 7860, configurable via PORT env)
+# Expose port 7860 (required by HF Spaces)
 EXPOSE 7860
 
 # Start the server
-CMD ["python", "main.py"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
