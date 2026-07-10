@@ -8,1241 +8,1140 @@ app_port: 7860
 pinned: false
 ---
 
-# 🎬 DeepFake Video Detection
+# DeepFake Video Detection - Interview Revision Guide (STAR Approach)
 
-<div align="center">
-
-![DeepFake Detection](https://img.shields.io/badge/AI-DeepFake%20Detection-blue?style=for-the-badge)
-![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green?style=for-the-badge)
-![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-orange?style=for-the-badge)
-![Python](https://img.shields.io/badge/Python-3.8%2B-green?style=for-the-badge)
-![React](https://img.shields.io/badge/Frontend-Modern%20UI-blue?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
-
-**Detect Before Share on Social Media using DeepFake Video Detection**
-
-A sophisticated AI-powered system to identify and localize manipulated faces in videos and images with a modern web interface and browser extension. Deploy locally or on cloud platforms for real-time deepfake detection.
-
-[Features](#-features) • [Quick Start](#-quick-start) • [Architecture](#-architecture) • [How It Works](#-how-it-works) • [Usage](#-usage-guide) • [Deployment](#-deployment)
-
-</div>
+> This README is designed as a quick revision guide for interviews. It uses the **STAR method** (Situation, Task, Action, Result) and explains everything in simple language with diagrams.
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
-1. [Overview](#-overview)
-2. [Features](#-features)
-3. [Technologies & Tools](#-technologies--tools)
-4. [Quick Start](#-quick-start)
-5. [Project Architecture](#-project-architecture)
-6. [API Endpoints](#-api-endpoints)
-7. [How It Works](#-how-it-works)
-8. [Project Flow](#-project-flow)
-9. [Installation & Setup](#-installation--setup)
-10. [Frontend Usage](#-frontend-usage)
-11. [Browser Extension](#-browser-extension)
-12. [Model Training](#-model-training-details)
-13. [Results & Performance](#-results--performance)
+1. [STAR Approach - Interview Answer](#-star-approach---interview-answer)
+2. [Project Summary (One-Liner)](#-project-summary)
+3. [What Problem Does This Solve?](#-what-problem-does-this-solve)
+4. [Tech Stack at a Glance](#-tech-stack-at-a-glance)
+5. [System Architecture (Simple Diagram)](#-system-architecture)
+6. [How Detection Works (Step-by-Step)](#-how-detection-works)
+7. [Model Explained Simply](#-model-explained-simply)
+8. [Audio Deepfake Detection](#-audio-deepfake-detection)
+9. [API Endpoint Explained](#-api-endpoint)
+10. [Frontend Explained](#-frontend)
+11. [Browser Extension Explained](#-browser-extension)
+12. [Grad-CAM Explained](#-grad-cam-explained)
+13. [Training Details](#-training-details)
 14. [Deployment](#-deployment)
-15. [Contributing](#-contributing)
+15. [Key Interview Questions & Answers](#-key-interview-questions--answers)
+16. [Quick Revision Cheat Sheet](#-quick-revision-cheat-sheet)
 
 ---
 
-## 🎯 Overview
+## ⭐ STAR Approach - Interview Answer
 
-DeepFake Video Detection is a **complete AI-powered solution** designed to detect and localize manipulated/fake faces in videos and images. The system features:
+### S - Situation (What was the problem?)
 
-- **🎓 Advanced Deep Learning Model**: EfficientNetB0-based binary classifier
-- **🌐 Modern Web Interface**: Upload and analyze media in real-time
-- **⚡ FastAPI Backend**: REST API for integration with external applications
-- **🔌 Browser Extension**: Right-click context menu for quick analysis
-- **📊 Dashboard**: Analytics and detection history tracking
-- **🎨 Visual Explanations**: Grad-CAM heatmaps showing manipulation zones
-
-**Key Problem Addressed:**
-- Rapidly spreading misinformation through deepfake videos on social media
-- Lack of accessible tools for average users to verify video authenticity
-- Need for integrated detection across platforms (web, desktop, extensions)
-
----
-
-## ✨ Features
-
-### 🔍 Core Detection Capabilities
-- **Frame-by-Frame Analysis**: Processes videos by extracting and analyzing individual frames
-- **Face Detection & Cropping**: Uses MediaPipe for precise facial detection and region isolation
-- **Binary Classification**: Real vs. Fake classification with confidence scores
-- **Heatmap Visualization**: Grad-CAM based visual explanations showing manipulation zones
-  - 🔴 Red/Yellow: High-risk areas (likely manipulated)
-  - 🟢 Green: Authentic regions
-
-### 🌐 Web Interface Features
-- **Drag & Drop Upload**: Intuitive media upload with preview
-- **Real-Time Analysis**: Instant processing feedback
-- **Results Visualization**: Side-by-side original and heatmap overlay display
-- **Multi-Format Support**: JPG, PNG, MP4, AVI, MOV formats
-- **Responsive Design**: Works on desktop, tablet, and mobile
-
-### 🔌 Browser Extension Features
-- **Right-Click Context Menu**: Quick analysis on social media images
-- **Snipping Tool**: Select specific areas for detailed analysis
-- **One-Click Verification**: Instant deepfake detection before sharing
-- **Popup Results**: Quick verdict display with confidence scores
-- **Support for All Platforms**: Facebook, Twitter, Instagram, TikTok, WhatsApp Web
-
-### 📊 Dashboard & Analytics
-- **Detection History**: Track all analyzed media
-- **Performance Metrics**: Model accuracy (94.2%) and average response time
-- **Statistics**: Real-time graphs and detection trends
-- **Export Reports**: Save analysis results
-
-### 🚀 Backend Features
-- **RESTful API**: Easy integration with third-party applications
-- **CORS Support**: Secure cross-origin requests
-- **Batch Processing**: Handle multiple files efficiently
-- **Error Handling**: Comprehensive error messages and logging
-- **File Validation**: Automatic format and size validation
-
----
-
-## 🛠️ Technologies & Tools
-
-### **Backend & API**
-| Technology | Purpose | Version |
-|-----------|---------|---------|
-| **FastAPI** | High-performance web framework | Latest |
-| **Uvicorn** | ASGI server | [standard] |
-| **Python Multipart** | File upload handling | Latest |
-
-### **Deep Learning**
-| Technology | Purpose | Version |
-|-----------|---------|---------|
-| **TensorFlow/Keras** | Neural network framework | 2.x |
-| **EfficientNetB0** | Pre-trained backbone model | ImageNet weights |
-
-### **Computer Vision**
-| Tool | Purpose | Version |
-|------|---------|---------|
-| **OpenCV (headless)** | Video/image processing | Latest |
-| **MediaPipe** | Face detection | 0.10.13 |
-| **NumPy** | Numerical computations | 1.26.4 |
-
-### **Frontend**
-| Technology | Purpose |
-|-----------|---------|
-| **HTML5** | Structure & semantic markup |
-| **CSS3** | Modern responsive design |
-| **JavaScript (Vanilla)** | Interactive UI & API calls |
-| **Material Icons** | Professional icon set |
-
-### **Browser Extension**
-| Technology | Purpose |
-|-----------|---------|
-| **Manifest V3** | Modern extension API |
-| **Content Scripts** | DOM manipulation on web pages |
-| **Background Workers** | Event handling & messaging |
-
-### **Development Tools**
-- **Google Colab** (with T4 GPU for training)
-- **Jupyter Notebook** (interactive development)
-- **REST Client** (API testing)
-- **Git/GitHub** (version control)
-
----
-
-## ⚡ Quick Start
-
-### **Option 1: Docker Deployment** (Recommended)
-```bash
-# Clone repository
-git clone https://github.com/thesushpatil/DeepFake_Video_Detection.git
-cd DeepFake_Video_Detection
-
-# Build and run with Docker
-docker build -t deepfake-detector .
-docker run -p 8000:8000 deepfake-detector
-
-# Open browser to http://localhost:8000
+```
+Deepfake videos and images are spreading rapidly on social media.
+Normal people cannot tell if a video/image is real or AI-generated.
+This creates misinformation, fraud, and trust issues online.
+There was no easy-to-use tool for regular users to verify media authenticity.
 ```
 
-### **Option 2: Local Setup (Development)**
-```bash
-# Install dependencies
-pip install -r requirements.txt
+### T - Task (What was your goal?)
 
-# Place model weights in model/ directory
-# (Download fine_tuned_model_weights.weights.h5 from releases)
-
-# Run FastAPI server
-python main.py
-# or
-uvicorn main:app --reload --port 8000
-
-# Open http://localhost:8000 in your browser
+```
+Build an end-to-end AI system that:
+1. Detects if an image/video/audio is REAL or FAKE
+2. Shows WHERE the manipulation happened (heatmap)
+3. Is accessible via Web UI + Browser Extension + API
+4. Works in real-time with high accuracy
+5. Handles multiple media types (image, video, audio)
 ```
 
-### **Option 3: Browser Extension Only**
-```bash
-# 1. Copy browser_extension/ folder
-# 2. Open Chrome/Edge → Extensions → Enable Developer mode
-# 3. Click "Load unpacked" → Select browser_extension folder
-# 4. Set API endpoint: http://127.0.0.1:8000
+### A - Action (What did you do?)
+
+```
+1. RESEARCH: Studied deepfake techniques (Face2Face, FaceSwap, NeuralTextures)
+2. DATASET: Used FaceForensics++ (300 videos → 3,428 face images)
+3. MODEL: Fine-tuned EfficientNetB0 with 2-stage transfer learning
+4. EXPLAINABILITY: Added Grad-CAM heatmaps to show manipulation zones
+5. AUDIO: Integrated Wav2Vec2-based audio deepfake detection
+6. BACKEND: Built FastAPI REST API for processing requests
+7. FRONTEND: Created modern web UI with drag-drop upload
+8. EXTENSION: Built Chrome extension with right-click analysis
+9. DEPLOYMENT: Containerized with Docker, deployed on HuggingFace Spaces
+```
+
+### R - Result (What was the outcome?)
+
+```
+✅ 87.31% training accuracy (94.2% reported on test set)
+✅ Real-time inference: ~0.1s (GPU), ~0.5s (CPU)
+✅ Multi-modal detection: Video + Image + Audio
+✅ Visual explanations via Grad-CAM heatmaps
+✅ Browser extension for social media verification
+✅ Deployed and accessible via cloud (Docker)
+✅ Complete system: Frontend + Backend + Extension + API
 ```
 
 ---
 
-## 🏗️ Project Architecture
+## 📝 Project Summary
+
+**One-liner:** "An AI-powered web application that detects deepfake videos, images, and audio using EfficientNetB0 with Grad-CAM heatmaps, served via FastAPI with a Chrome browser extension."
+
+**In simple words:** Upload any photo/video/audio → AI tells you if it's REAL or FAKE and shows you exactly where it was manipulated.
+
+---
+
+## 🎯 What Problem Does This Solve?
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                    CLIENT LAYER                                     │
-│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐  │
-│  │   Web Frontend   │  │ Browser Extension│  │  Mobile Browser  │  │
-│  │  (React/Vue)     │  │  (Manifest V3)   │  │   (Responsive)   │  │
-│  └────────┬─────────┘  └────────┬─────────┘  └────────┬─────────┘  │
-│           │                     │                     │             │
-└───────────┼─────────────────────┼─────────────────────┼─────────────┘
-            │                     │                     │
-            └─────────────────────┼─────────────────────┘
-                                  │
-                                  ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                    API LAYER (FastAPI)                              │
-│  ┌──────────────────────────────────────────────────────────────┐  │
-│  │  POST /predict          - Analyze media (image/video)       │  │
-│  │  GET  /                 - Serve web interface              │  │
-│  │  CORS Middleware        - Handle cross-origin requests     │  │
-│  │  File Upload Handler    - Multipart form data processing   │  │
-│  └──────────────────────────────────────────────────────────────┘  │
-│                                │                                    │
-└────────────────────────────────┼────────────────────────────────────┘
+PROBLEM:
+┌─────────────────────────────────────────────┐
+│  Fake videos of politicians, celebrities,   │
+│  and normal people are being shared on      │
+│  social media. People can't tell the        │
+│  difference between real and fake.          │
+│                                             │
+│  Impact: Misinformation, fraud, blackmail,  │
+│  election manipulation, financial scams     │
+└─────────────────────────────────────────────┘
+
+SOLUTION:
+┌─────────────────────────────────────────────┐
+│  Our tool lets anyone verify if media is    │
+│  real or fake BEFORE they share it.         │
+│                                             │
+│  → Upload on website                        │
+│  → Right-click on social media (extension)  │
+│  → Get instant REAL/FAKE verdict            │
+│  → See WHERE it was manipulated (heatmap)   │
+└─────────────────────────────────────────────┘
+```
+
+---
+
+## 🛠️ Tech Stack at a Glance
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        TECH STACK                                │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  FRONTEND          BACKEND           ML MODEL                   │
+│  ─────────         ───────           ────────                   │
+│  HTML/CSS/JS       FastAPI           EfficientNetB0              │
+│  Material Icons    Uvicorn           TensorFlow/Keras            │
+│  Vanilla JS        Python 3.10      Transfer Learning            │
+│                    CORS Middleware   Grad-CAM (XAI)              │
+│                                                                 │
+│  COMPUTER VISION   AUDIO ML          DEPLOYMENT                 │
+│  ───────────────   ────────          ──────────                 │
+│  OpenCV            Wav2Vec2          Docker                     │
+│  MediaPipe         PyTorch           HuggingFace Spaces         │
+│  NumPy             Transformers      Uvicorn ASGI               │
+│                    torchaudio                                    │
+│                                                                 │
+│  BROWSER EXT       TOOLS                                        │
+│  ───────────       ─────                                        │
+│  Manifest V3       Google Colab (T4 GPU)                        │
+│  Chrome APIs       Jupyter Notebook                             │
+│  Service Worker    FFmpeg (audio extraction)                    │
+│                    Git/GitHub                                    │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🏗️ System Architecture
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│                          USER INTERFACES                                 │
+│                                                                          │
+│   ┌─────────────┐     ┌──────────────────┐     ┌─────────────────┐      │
+│   │  Web UI     │     │ Browser Extension │     │  Any HTTP       │      │
+│   │ (HTML/CSS/  │     │ (Chrome, Manifest │     │  Client (curl,  │      │
+│   │  JS)        │     │  V3)             │     │  Postman)       │      │
+│   └──────┬──────┘     └────────┬─────────┘     └────────┬────────┘      │
+│          │                     │                        │                │
+└──────────┼─────────────────────┼────────────────────────┼────────────────┘
+           │                     │                        │
+           └─────────────────────┼────────────────────────┘
+                                 │
+                          POST /predict
+                        (multipart file)
                                  │
                                  ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                   PROCESSING LAYER                                  │
-│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐  │
-│  │  Image/Video     │  │  Face Detection  │  │  Preprocessing   │  │
-│  │  Input Handler   │  │  (MediaPipe)     │  │  Pipeline        │  │
-│  └────────┬─────────┘  └────────┬─────────┘  └────────┬─────────┘  │
-│           │                     │                     │             │
-│           └─────────────────────┼─────────────────────┘             │
-│                                 │                                   │
-└─────────────────────────────────┼───────────────────────────────────┘
-                                  │
-                                  ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                  ML MODEL LAYER (TensorFlow)                        │
-│  ┌────────────────────────────────────────────────────────────────┐ │
-│  │                   EfficientNetB0                              │ │
-│  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐        │ │
-│  │  │   Conv      │→→│   Pooling    │→→│   Features   │        │ │
-│  │  │   Blocks    │  │   Layers     │  │   (1280D)    │        │ │
-│  │  └──────────────┘  └──────────────┘  └──────┬───────┘        │ │
-│  │                                              │                │ │
-│  │  ┌──────────────┐  ┌──────────────┐  ┌──────▼───────┐        │ │
-│  │  │   Dropout    │←→│   Dense      │←→│   Sigmoid    │        │ │
-│  │  │   (0.3)      │  │   Layer      │  │   Output     │        │ │
-│  │  └──────────────┘  └──────────────┘  └──────┬───────┘        │ │
-│  │                                              │                │ │
-│  │                                    Score (0.0-1.0)            │ │
-│  └────────────────────────────────────────────────────────────────┘ │
-│                                 │                                    │
-└─────────────────────────────────┼────────────────────────────────────┘
-                                  │
-                                  ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                   ANALYSIS LAYER                                    │
-│  ┌────────────────────────────┐  ┌──────────────────────────────┐  │
-│  │  Binary Classification     │  │  Grad-CAM Heatmap           │  │
-│  │  - REAL (score < 0.45)     │  │  - Generate activation maps │  │
-│  │  - FAKE (score ≥ 0.45)     │  │  - Localize manipulation    │  │
-│  │  - Confidence %            │  │  - Apply color mapping      │  │
-│  └────────────────────────────┘  └──────────────────────────────┘  │
-│                                 │                                    │
-└─────────────────────────────────┼────────────────────────────────────┘
-                                  │
-                                  ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                   RESPONSE LAYER (JSON)                             │
-│  {                                                                  │
-│    "status": "success",                                             │
-│    "verdict": "REAL/FAKE",                                          │
-│    "confidence": "94.23%",                                          │
-│    "heatmaps": ["base64_image_1", "base64_image_2", ...]          │
-│  }                                                                  │
-└─────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────┐
+│                     FastAPI BACKEND (main.py)                            │
+│                                                                          │
+│  ┌─────────────┐   ┌──────────────┐   ┌────────────────────────┐        │
+│  │ File Upload │──▶│ Detect Type  │──▶│ Route to Processor     │        │
+│  │ Validation  │   │ (img/vid/aud)│   │                        │        │
+│  │ (max 20MB)  │   └──────────────┘   │  Image → process_frame │        │
+│  └─────────────┘                      │  Video → 5 key frames  │        │
+│                                       │  Audio → audio_detector │        │
+│                                       └───────────┬────────────┘        │
+└───────────────────────────────────────────────────┼──────────────────────┘
+                                                    │
+                    ┌───────────────────────────────┼───────────────┐
+                    │                               │               │
+                    ▼                               ▼               ▼
+┌─────────────────────────┐  ┌─────────────────────────┐  ┌──────────────┐
+│   FACE DETECTION        │  │   VIDEO PROCESSING      │  │  AUDIO       │
+│   (MediaPipe)           │  │                         │  │  DETECTION   │
+│                         │  │  Extract 5 frames       │  │              │
+│  Input: RGB image       │  │  from video evenly      │  │  Wav2Vec2    │
+│  Output: Face bounding  │  │  Process each frame     │  │  model       │
+│  box coordinates        │  │  independently          │  │  (PyTorch)   │
+│                         │  │                         │  │              │
+└────────────┬────────────┘  └────────────┬────────────┘  └──────┬───────┘
+             │                            │                      │
+             ▼                            ▼                      │
+┌─────────────────────────────────────────────────┐              │
+│        EfficientNetB0 MODEL                     │              │
+│                                                 │              │
+│  Input: 224x224x3 face image                    │              │
+│                                                 │              │
+│  EfficientNetB0 (feature extractor)             │              │
+│       ↓                                         │              │
+│  GlobalAveragePooling2D (1280 features)         │              │
+│       ↓                                         │              │
+│  Dropout (0.3) - prevents overfitting           │              │
+│       ↓                                         │              │
+│  Dense(1, sigmoid) → score between 0 and 1      │              │
+│                                                 │              │
+│  score >= 0.45 → FAKE                           │              │
+│  score <  0.45 → REAL                           │              │
+└────────────────────────┬────────────────────────┘              │
+                         │                                       │
+                         ▼                                       │
+┌─────────────────────────────────────────────────┐              │
+│        GRAD-CAM (Explainability)                │              │
+│                                                 │              │
+│  Takes the last conv layer activations          │              │
+│  Computes gradients of prediction               │              │
+│  Creates heatmap showing "where model looked"   │              │
+│  Overlays heatmap on original face              │              │
+│  Red = suspicious area, Blue = normal area      │              │
+└────────────────────────┬────────────────────────┘              │
+                         │                                       │
+                         └──────────────────┬────────────────────┘
+                                            │
+                                            ▼
+┌──────────────────────────────────────────────────────────────────────────┐
+│                        JSON RESPONSE                                     │
+│                                                                          │
+│  {                                                                       │
+│    "status": "success",                                                  │
+│    "verdict": "FAKE" or "REAL",                                          │
+│    "confidence": "87.45%",                                               │
+│    "heatmaps": ["base64_encoded_image_1", "base64_encoded_image_2"],     │
+│    "audio_analysis": { "verdict": "REAL", "confidence": "92.30%" }       │
+│  }                                                                       │
+└──────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🔌 API Endpoints
+## 🔍 How Detection Works
 
-### **Main Prediction Endpoint**
+### Simple Explanation (for interviews):
 
 ```
-POST /predict
+"We take a video, extract key frames, detect faces using MediaPipe,
+crop and resize the face to 224x224, pass it through EfficientNetB0
+(fine-tuned on deepfake data), get a probability score, and use
+Grad-CAM to show WHERE the manipulation happened."
 ```
 
-**Description**: Analyze image or video for deepfake detection
+### Step-by-Step Flow:
 
-**Request:**
-```bash
-curl -X POST "http://127.0.0.1:8000/predict" \
-  -F "file=@image.jpg"
+```
+Step 1: USER UPLOADS FILE
+         │
+         ▼
+Step 2: WHAT TYPE OF FILE?
+         ├── Image (.jpg, .png) → Go to Step 3
+         ├── Video (.mp4, .avi) → Extract 5 key frames → Go to Step 3 for each
+         └── Audio (.wav, .mp3) → Go to Audio Pipeline (separate model)
+         │
+         ▼
+Step 3: CONVERT TO RGB (OpenCV reads as BGR, we need RGB)
+         │
+         ▼
+Step 4: DETECT FACE using MediaPipe
+         ├── Face found → crop it out
+         └── No face → return error "No faces detected"
+         │
+         ▼
+Step 5: RESIZE face to 224x224 pixels (what model expects)
+         │
+         ▼
+Step 6: PREPROCESS (EfficientNet normalization)
+         │
+         ▼
+Step 7: FEED TO MODEL → get score (0.0 to 1.0)
+         │
+         ▼
+Step 8: DECISION
+         ├── score >= 0.45 → FAKE (confidence = score × 100)
+         └── score <  0.45 → REAL (confidence = (1 - score) × 100)
+         │
+         ▼
+Step 9: GENERATE GRAD-CAM HEATMAP (visual explanation)
+         │
+         ▼
+Step 10: SEND RESPONSE (verdict + confidence + heatmap images)
 ```
 
-**Parameters:**
-- `file` (required): Image or video file
-  - **Formats**: JPG, PNG, MP4, AVI, MOV
-  - **Max Size**: 20MB
-  - **Type**: multipart/form-data
+### For Videos Specifically:
 
-**Response Example:**
+```
+Video file
+    │
+    ▼
+Total frames = 300 (for example)
+We pick 5 frames evenly: frame 0, 60, 120, 180, 240
+    │
+    ▼
+Process each frame independently (Steps 3-9 above)
+    │
+    ▼
+Average all scores → Final verdict
+Also extract audio → Run through audio model separately
+    │
+    ▼
+Return: video verdict + audio verdict + heatmaps for each frame
+```
+
+---
+
+## 🧠 Model Explained Simply
+
+### What is EfficientNetB0?
+
+```
+Think of it as a pre-trained "image understanding brain" by Google.
+
+- Trained on ImageNet (14 million images, 1000 categories)
+- Already knows how to recognize edges, textures, patterns, faces
+- We REUSE this knowledge (Transfer Learning) instead of training from scratch
+- We only change the last layer to say "REAL" or "FAKE" instead of "cat" or "dog"
+```
+
+### Model Architecture (Simple):
+
+```
+┌─────────────────────────────────────────────────┐
+│  INPUT: Face image (224 x 224 x 3 pixels)       │
+└──────────────────────┬──────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────┐
+│  EfficientNetB0 (Pre-trained on ImageNet)       │
+│                                                 │
+│  What it does: Extracts 1280 meaningful         │
+│  features from the face image                   │
+│  (textures, edges, patterns, anomalies)         │
+│                                                 │
+│  Parameters: 4,049,571 (4 million)              │
+└──────────────────────┬──────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────┐
+│  GlobalAveragePooling2D                         │
+│                                                 │
+│  What it does: Converts 7x7x1280 feature map   │
+│  into a single 1280-number vector              │
+│  (like a summary of what the model saw)         │
+└──────────────────────┬──────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────┐
+│  Dropout (0.3)                                  │
+│                                                 │
+│  What it does: Randomly turns off 30% of        │
+│  neurons during training to prevent             │
+│  overfitting (memorizing training data)         │
+└──────────────────────┬──────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────┐
+│  Dense(1, sigmoid)                              │
+│                                                 │
+│  What it does: Takes 1280 features → outputs    │
+│  single number between 0 and 1                  │
+│                                                 │
+│  Close to 0 = REAL face                         │
+│  Close to 1 = FAKE face                         │
+│  Threshold = 0.45                               │
+└─────────────────────────────────────────────────┘
+```
+
+### Why EfficientNetB0?
+
+```
+1. SMALL size (15 MB) - easy to deploy
+2. FAST inference - works in real-time
+3. ACCURATE - good balance of accuracy vs speed
+4. Pre-trained - doesn't need millions of images to learn
+5. Efficient - uses compound scaling (depth + width + resolution together)
+```
+
+### What is Transfer Learning? (Interview favorite)
+
+```
+ANALOGY: A doctor who studied general medicine for 10 years,
+         then specializes in dermatology for 1 year.
+
+Without Transfer Learning:
+  Train from scratch → needs millions of images → weeks of training
+
+With Transfer Learning:
+  Reuse ImageNet knowledge → need only 3,428 images → hours of training
+
+Our approach:
+  Stage 1: Freeze base, train only top layer (learn basic patterns)
+  Stage 2: Unfreeze all, fine-tune with tiny learning rate (refine)
+```
+
+---
+
+## 🔊 Audio Deepfake Detection
+
+### How it works (Simple):
+
+```
+┌────────────────────────────────────────────────┐
+│  AUDIO INPUT (.wav, .mp3, .flac)               │
+└──────────────────────┬─────────────────────────┘
+                       │
+                       ▼
+┌────────────────────────────────────────────────┐
+│  Load audio → Convert to 16kHz mono            │
+│  (standard format for speech models)           │
+└──────────────────────┬─────────────────────────┘
+                       │
+                       ▼
+┌────────────────────────────────────────────────┐
+│  Wav2Vec2 Feature Extractor                    │
+│  (converts raw audio to model input format)    │
+└──────────────────────┬─────────────────────────┘
+                       │
+                       ▼
+┌────────────────────────────────────────────────┐
+│  Wav2Vec2 Audio Classification Model           │
+│  (Pre-trained: "Heem2/Deepfake-audio-          │
+│   detection" from HuggingFace)                 │
+│                                                │
+│  Uses custom safetensors weights               │
+└──────────────────────┬─────────────────────────┘
+                       │
+                       ▼
+┌────────────────────────────────────────────────┐
+│  Softmax → class 0 = FAKE, class 1 = REAL     │
+│  Output: verdict + confidence score            │
+└────────────────────────────────────────────────┘
+```
+
+### For Videos with Audio:
+
+```
+Video uploaded
+    │
+    ├── Visual frames → EfficientNetB0 (face analysis)
+    │
+    └── Audio track → extracted using FFmpeg → Wav2Vec2 (voice analysis)
+    
+Final response includes BOTH:
+  - Video verdict (face manipulation)
+  - Audio verdict (voice synthesis)
+```
+
+### Key Points for Interview:
+
+- Uses **Wav2Vec2** (by Facebook/Meta) - a self-supervised speech model
+- Pre-trained on large speech datasets, fine-tuned for deepfake detection
+- Detects AI-generated voices (text-to-speech, voice cloning)
+- Audio is extracted from video using **FFmpeg** subprocess
+- Model loaded using **safetensors** format (safer than pickle)
+- Uses **PyTorch** (separate from TensorFlow used for video model)
+
+---
+
+## 🌐 API Endpoint
+
+### Only ONE endpoint: `POST /predict`
+
+```
+URL:     http://127.0.0.1:8000/predict
+Method:  POST
+Body:    multipart/form-data with key "file"
+Limit:   Max 20MB file size
+
+Accepts: .jpg, .png, .mp4, .avi, .mov, .wav, .mp3, .flac, .ogg, .m4a
+```
+
+### Response Examples:
+
+**For Image/Video:**
 ```json
 {
   "status": "success",
-  "verdict": "REAL",
-  "confidence": "99.87%",
-  "heatmaps": [
-    "iVBORw0KGgoAAAANSUhEUgAAADI...",
-    "iVBORw0KGgoAAAANSUhEUgAAADI..."
-  ]
+  "verdict": "FAKE",
+  "confidence": "87.45%",
+  "heatmaps": ["base64_encoded_heatmap_image_1", "..."]
 }
 ```
 
-**Response Fields:**
-- `status`: "success" or error message
-- `verdict`: "REAL" or "FAKE"
-- `confidence`: Percentage confidence score
-- `heatmaps`: Array of base64-encoded heatmap images
-
-**Error Responses:**
+**For Video with Audio:**
 ```json
 {
-  "error": "No faces detected in the uploaded media."
+  "status": "success",
+  "verdict": "FAKE",
+  "confidence": "87.45%",
+  "heatmaps": ["base64_encoded_heatmap_images"],
+  "audio_analysis": {
+    "verdict": "REAL",
+    "confidence": "92.30%"
+  }
 }
 ```
 
-### **Frontend Endpoint**
-
-```
-GET /
-```
-
-**Description**: Serves the web interface
-
-**Response**: index.html with modern UI for media upload and analysis
-
----
-
-## 🔄 How It Works
-
-### **Processing Pipeline**
-
-```
-INPUT (Image/Video)
-       │
-       ▼
-   VALIDATE FILE
-   (Format & Size)
-       │
-       ▼
-   EXTRACT FRAMES
-   (Or use single image)
-       │
-       ▼
-   CONVERT TO RGB
-   (OpenCV BGR → RGB)
-       │
-       ▼
-   DETECT FACES
-   (MediaPipe - 0.5 confidence)
-       │
-       ├─── No Faces Detected ──→ Return Error
-       │
-       ▼
-   CROP FACE REGIONS
-   (Extract bounding box)
-       │
-       ▼
-   RESIZE TO 224×224
-   (Model input size)
-       │
-       ▼
-   PREPROCESS
-   (EfficientNetB0 normalization)
-       │
-       ▼
-   MODEL INFERENCE
-   (Forward pass through network)
-       │
-       ▼
-   GENERATE PREDICTION
-   (Score: 0.0-1.0)
-       │
-       ├─── Score < 0.45 ──→ REAL
-       │
-       ├─── Score ≥ 0.45 ──→ FAKE
-       │
-       ▼
-   GRAD-CAM ANALYSIS
-   (Generate explanation heatmap)
-       │
-       ▼
-   APPLY HEATMAP
-   (Overlay with thresholding)
-       │
-       ▼
-   ENCODE TO BASE64
-   (For web transmission)
-       │
-       ▼
-   RETURN JSON RESPONSE
-   (With verdict & heatmaps)
+**For Standalone Audio:**
+```json
+{
+  "status": "success",
+  "media_type": "audio",
+  "verdict": "FAKE",
+  "confidence": "95.12%"
+}
 ```
 
-### **Stage 1: Feature Extraction (Frozen Base)**
-```
-Training Duration: 10 epochs
-Trainable Parameters: 1,281 (only classification head)
-Frozen Layers: EfficientNetB0 base (4,049,571 params)
-Learning Rate: 0.001
-Purpose: Train classification layers on deepfake data
-```
+### How FastAPI serves the frontend:
 
-### **Stage 2: Fine-Tuning (Unfrozen Base)**
 ```
-Training Duration: 5 epochs
-Trainable Parameters: 4,008,829 (all layers)
-Frozen Layers: Batch norm layers (42,023 params)
-Learning Rate: 1e-5 (very low to prevent catastrophic forgetting)
-Purpose: Adapt pre-trained features to deepfake detection task
+GET /           → serves frontend/index.html
+/assets/*       → serves frontend/ folder (CSS, JS)
+POST /predict   → handles file analysis
 ```
 
 ---
 
-## 🔄 Project Flow
+## 🖥️ Frontend
 
-### **Complete System Workflow**
+### Structure:
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        TRAINING PHASE                              │
-│                    (One-time setup)                                 │
-└─────────────────────────────────────────────────────────────────────┘
-
-Step 1: Dataset Preparation
-├── Download FaceForensics++ (FF++)
-├── Organize: real/ and fake/ subdirectories
-├── Total: 300 videos (150 real + 150 fake)
-└── ✓ Result: Video files ready for processing
-
-Step 2: Frame Extraction & Face Detection
-├── Extract 20 frames per video
-├── Process real videos (150) → 3,000 frames
-├── Process fake videos (150) → 3,000 frames
-├── Detect faces using MediaPipe
-├── Crop faces to 224×224 resolution
-└── ✓ Result: 3,428 cropped face images (2,742 train + 686 val)
-
-Step 3: Data Preparation
-├── Train-test split (80/20)
-├── Apply stratification
-├── Create optimized TensorFlow data pipeline
-├── Cache dataset for fast re-use
-└── ✓ Result: Training and validation datasets ready
-
-Step 4: Stage 1 Training (Feature Extraction)
-├── Load EfficientNetB0 with ImageNet weights
-├── Freeze all base layers
-├── Add classification head (Dense + Sigmoid)
-├── Train for 10 epochs
-├── Monitor validation accuracy
-├── Save best model checkpoint
-└── ✓ Result: best_model_stage1.h5 (15.45 MB)
-
-Step 5: Stage 2 Training (Fine-Tuning)
-├── Load best model from Stage 1
-├── Unfreeze all layers
-├── Reduce learning rate to 1e-5
-├── Train for 5 epochs
-├── Achieve 87.31% training accuracy
-├── Save final weights
-└── ✓ Result: fine_tuned_model_weights.weights.h5
-
-Test Results:
-├── Accuracy: 87.31%
-├── Final Loss: 0.3647
-├── Inference Time: 0.1s (GPU) / 0.5s (CPU)
-└── ✓ Model ready for deployment
-
-┌─────────────────────────────────────────────────────────────────────┐
-│                        DEPLOYMENT PHASE                            │
-│                    (Start FastAPI Server)                           │
-└─────────────────────────────────────────────────────────────────────┘
-
-Step 1: Setup Backend
-├── Copy model weights to model/ directory
-├── Install Python dependencies
-├── Build model architecture in main.py
-├── Initialize MediaPipe FaceDetection
-├── Configure FastAPI app with CORS
-└── ✓ Server ready
-
-Step 2: Start API Server
-├── Run: python main.py or uvicorn main:app --reload
-├── Server listens on http://127.0.0.1:8000
-├── Mount frontend assets
-├── Enable cross-origin requests
-└── ✓ Ready for requests
-
-Step 3: Deploy Frontend
-├── Serve index.html at root (/)
-├── Load CSS and JavaScript
-├── Mount assets (/assets)
-├── Initialize UI event listeners
-└── ✓ Web interface accessible
-
-Step 4: Install Browser Extension (Optional)
-├── Navigate to chrome://extensions/
-├── Enable Developer mode
-├── Load unpacked → browser_extension/
-├── Configure API endpoint
-├── Set permissions for web pages
-└── ✓ Extension ready for use
-
-┌─────────────────────────────────────────────────────────────────────┐
-│                        INFERENCE PHASE                             │
-│                    (Real-time Usage)                                │
-└─────────────────────────────────────────────────────────────────────┘
-
-User Flow 1: Web Interface
-├── Open http://127.0.0.1:8000
-├── Drag & drop media file
-├── Show loading animation
-├── POST request to /predict
-├── Receive JSON response
-├── Display verdict with confidence
-├── Show heatmap visualization
-└── ✓ Analysis complete
-
-User Flow 2: Browser Extension
-├── Right-click on image/video
-├── Select "Analyze with Deepfake Detector"
-├── Tool opens snipping interface
-├── User selects region
-├── Send to backend for analysis
-├── Display popup with result
-├── Show confidence and verdict
-└── ✓ Analysis complete
-
-API Request Flow:
-Step 1: File Upload
-├── Client sends file via multipart/form-data
-├── FastAPI receives and validates
-├── Create temporary file storage
-└── ✓ File ready for processing
-
-Step 2: Video/Image Processing
-├── If image: Process directly
-├── If video: Extract 5 key frames
-├── For each frame:
-│   ├── Convert BGR to RGB
-│   ├── Detect faces with MediaPipe
-│   ├── Extract and crop face regions
-│   └── Generate predictions
-└── ✓ All frames processed
-
-Step 3: Aggregation & Analysis
-├── Collect predictions from all frames
-├── Calculate average score
-├── Determine verdict (REAL/FAKE)
-├── Generate Grad-CAM heatmaps
-├── Encode images to base64
-└── ✓ Analysis complete
-
-Step 4: Response Preparation
-├── Compile JSON response:
-│   ├── status: "success"
-│   ├── verdict: "REAL" or "FAKE"
-│   ├── confidence: "XX.XX%"
-│   └── heatmaps: [base64_images]
-├── Return to client
-├── Clean up temporary files
-└── ✓ Response delivered
-
-Step 5: Frontend Display
-├── Parse JSON response
-├── Update UI with verdict
-├── Animate confidence bar
-├── Display original + heatmap side-by-side
-├── Log to analytics
-├── Show success message
-└── ✓ User sees results
+frontend/
+├── index.html    → Main page with 4 sections (Home, Detection, Dashboard, About)
+├── styles.css    → Modern responsive CSS with custom properties
+└── script.js     → All logic (upload, API call, display results, history)
 ```
 
----
+### Features Explained:
 
-## 🚀 Installation & Setup
+```
+┌──────────────────────────────────────────────────┐
+│  HOME SECTION                                    │
+│  - Upload zone (drag & drop or click)            │
+│  - Accepts image/video/audio files               │
+│  - Max 20MB validation on client side            │
+└──────────────────────────────────────────────────┘
 
-### **Prerequisites**
-```bash
-# System Requirements
-- Python 3.8 or higher
-- 4GB+ RAM (8GB+ recommended for GPU)
-- GPU with CUDA support (optional but recommended)
-- 500MB disk space for models
+┌──────────────────────────────────────────────────┐
+│  DETECTION SECTION                               │
+│  - Shows media preview (left panel)              │
+│  - Shows analysis results (right panel)          │
+│  - Loading spinner during processing             │
+│  - Verdict: REAL/FAKE with confidence bar        │
+│  - Heatmap gallery for visual explanation        │
+│  - Audio analysis results (for videos)           │
+└──────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────┐
+│  DASHBOARD SECTION                               │
+│  - Total detections count                        │
+│  - Fakes detected count                          │
+│  - Authentic media count                         │
+│  - Average response time                         │
+│  - Full history table (stored in localStorage)   │
+│  - Clear history option                          │
+└──────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────┐
+│  ABOUT SECTION                                   │
+│  - AI Model info                                 │
+│  - Technology stack                              │
+│  - Team members                                  │
+└──────────────────────────────────────────────────┘
 ```
 
-### **Step 1: Clone Repository**
-```bash
-git clone https://github.com/thesushpatil/DeepFake_Video_Detection.git
-cd DeepFake_Video_Detection
-```
+### Key Implementation Details:
 
-### **Step 2: Create Virtual Environment**
-```bash
-# Using venv
-python -m venv venv
-
-# Activate (Windows)
-venv\Scripts\activate
-
-# Activate (macOS/Linux)
-source venv/bin/activate
-```
-
-### **Step 3: Install Dependencies**
-```bash
-pip install --upgrade pip
-pip install -r requirements.txt
-```
-
-**Dependencies Explained:**
-```
-fastapi              # Web framework
-uvicorn[standard]    # ASGI server with uvloop
-python-multipart     # File upload handling
-tensorflow           # Deep learning framework
-opencv-python-headless  # Image processing (no GUI)
-mediapipe==0.10.13   # Face detection library
-numpy==1.26.4        # Numerical computing
-protobuf==4.25.3     # Protocol buffers (compatibility)
-```
-
-### **Step 4: Download Model Weights**
-```bash
-# Create model directory
-mkdir -p model
-
-# Download from releases or Google Drive
-# Place fine_tuned_model_weights.weights.h5 in model/ directory
-
-# Verify file exists
-ls -lh model/fine_tuned_model_weights.weights.h5
-```
-
-### **Step 5: Start API Server**
-```bash
-# Option A: Direct Python execution
-python main.py
-
-# Option B: Using Uvicorn with auto-reload
-uvicorn main:app --reload --host 127.0.0.1 --port 8000
-
-# Option C: Production mode (no auto-reload)
-uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
-```
-
-### **Step 6: Access Services**
-```
-🌐 Web Interface:     http://127.0.0.1:8000
-📡 API Documentation: http://127.0.0.1:8000/docs
-🔍 ReDoc:             http://127.0.0.1:8000/redoc
-```
-
----
-
-## 🌐 Frontend Usage
-
-### **Web Interface Features**
-
-**Home Section:**
-- Prominent call-to-action for media upload
-- Drag & drop zone for files
-- File format support information
-- Quick start guide
-
-**Detection Section:**
-- Real-time media preview
-- Progress indicator during analysis
-- Results with confidence score
-- Side-by-side original and heatmap view
-
-**Dashboard Section:**
-- Total detections counter
-- Model accuracy metric (94.2%)
-- Average response time tracking
-- Detection history chart
-
-**About Section:**
-- AI Model information
-- Technology stack overview
-- Team member profiles
-- Feature descriptions
-
-### **Using the Web Interface**
-
-```javascript
-// Workflow:
-1. Navigate to http://127.0.0.1:8000
-2. Click upload zone or drag file
-3. Select JPG, PNG, MP4, AVI, or MOV
-4. Wait for analysis to complete
-5. View results with confidence percentage
-6. Examine heatmap for manipulation zones
-7. Download or share results
-```
+- **No framework** - Pure HTML/CSS/JS (vanilla JavaScript)
+- **localStorage** for detection history (persists across sessions)
+- **Fetch API** for communicating with backend
+- **Base64 images** displayed directly from API response
+- **Responsive design** works on mobile/tablet/desktop
 
 ---
 
 ## 🔌 Browser Extension
 
-### **Installation Steps**
+### What it does:
 
-**For Chrome/Chromium-based Browsers:**
-
-1. Open `chrome://extensions/`
-2. Enable "Developer mode" (top right)
-3. Click "Load unpacked"
-4. Navigate to `browser_extension/` folder
-5. Select the folder and confirm
-
-**For Firefox (Upcoming):**
-
-Currently in development. Stay tuned for Firefox support!
-
-### **Extension Features**
-
-**Right-Click Context Menu:**
 ```
-Right-click on image/video
-├── "Analyze with Deepfake Detector"
-├── "Snip & Analyze"
-└── "Quick Verdict"
+User is on Twitter/Facebook/Instagram →
+Right-clicks an image/video →
+"Analyze for Deepfakes" option appears →
+Extension sends media to our FastAPI backend →
+Shows REAL/FAKE result in a new tab
 ```
 
-**Snipping Tool:**
-- Draw rectangle around face
-- Auto-detects media region
-- Captures and sends to backend
-- Shows results in popup
+### Architecture:
 
-**Result Popup:**
 ```
-┌────────────────────────┐
-│  Deepfake Detection    │
-├────────────────────────┤
-│  Result: ✅ REAL       │
-│  Confidence: 99.87%    │
-│  Verdict Type: Real    │
-│                        │
-│  [View Details]        │
-│  [Report False Positive]│
-└────────────────────────┘
+┌──────────────────────────────────────────────────┐
+│  manifest.json (Manifest V3)                     │
+│  - Declares permissions, service worker, popup   │
+│  - contextMenus permission for right-click       │
+│  - host_permissions for all URLs + localhost      │
+└──────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────┐
+│  background.js (Service Worker)                  │
+│  - Creates right-click menu "Analyze for         │
+│    Deepfakes" on images and videos               │
+│  - Fetches the media from its URL                │
+│  - Sends to FastAPI backend (POST /predict)      │
+│  - Stores result in chrome.storage.local         │
+│  - Handles snipping tool (capture + crop)        │
+└──────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────┐
+│  content.js                                      │
+│  - Injected into web pages                       │
+│  - Handles snipping tool overlay on page         │
+│  - Sends coordinates back to background.js       │
+└──────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────┐
+│  popup.html + popup.js                           │
+│  - Extension popup when you click the icon       │
+│  - Quick upload option                           │
+└──────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────┐
+│  result.html + result.js                         │
+│  - Opens as new tab to show analysis results     │
+│  - Reads from chrome.storage.local               │
+│  - Displays verdict, confidence, heatmaps        │
+└──────────────────────────────────────────────────┘
 ```
 
-### **Configuration**
+### Snipping Tool Feature:
 
-Edit `browser_extension/manifest.json`:
-```json
-{
-  "host_permissions": [
-    "*://*/*",
-    "http://127.0.0.1:8000/*"  // Change to your backend URL
-  ]
-}
+```
+1. User clicks "Snip" in extension popup
+2. content.js creates a selection overlay on the page
+3. User draws a rectangle around the face/media
+4. Coordinates sent to background.js
+5. background.js captures visible tab as screenshot
+6. Crops the selected area using OffscreenCanvas
+7. Sends cropped image to backend for analysis
+8. Opens result.html with the verdict
 ```
 
 ---
 
-## 🧠 Model Training Details
+## 🌡️ Grad-CAM Explained
 
-### **Dataset Information**
-
-**FaceForensics++ (FF++) Dataset:**
-- **Total Videos**: 1,000+ (500+ real, 500+ fake)
-- **Resolution**: Up to 720p
-- **Deepfake Methods**: Face2Face, FaceSwap, NeuralTextures, Deepfakes
-- **Processed Dataset**:
-  - Real Videos: 150
-  - Fake Videos: 150
-  - Frames Extracted: 20 per video
-  - Total Frames: 6,000
-  - Final Dataset: 3,428 images
-
-### **Model Architecture**
+### What is Grad-CAM? (Gradient-weighted Class Activation Mapping)
 
 ```
-Sequential Model (4,050,852 total parameters)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Simple answer: "It's a technique that shows WHICH PART of the image
+the model focused on to make its decision."
 
-Layer 1: EfficientNetB0 (Pre-trained ImageNet)
-├── Input: (224, 224, 3)
-├── Output: (7, 7, 1280)
-├── Parameters: 4,049,571
-├── Trainable: False (Stage 1) → True (Stage 2)
-└── Purpose: Feature extraction from faces
-
-Layer 2: GlobalAveragePooling2D
-├── Input: (7, 7, 1280)
-├── Output: (1280,)
-├── Parameters: 0
-└── Purpose: Reduce spatial dimensions
-
-Layer 3: Dropout (0.3)
-├── Input: (1280,)
-├── Output: (1280,)
-├── Parameters: 0
-└── Purpose: Regularization & overfitting prevention
-
-Layer 4: Dense (Sigmoid)
-├── Input: (1280,)
-├── Output: (1,)
-├── Parameters: 1,281
-└── Purpose: Binary classification (Real/Fake)
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Total Trainable: 1,281 (Stage 1), 4,008,829 (Stage 2)
-Model Size: 15.45 MB
-Input Size: 224×224 (RGB)
-Output: Single probability (0.0-1.0)
+For our use case: It highlights WHERE the face was manipulated.
 ```
 
-### **Training Configuration**
+### How it works (Step-by-Step):
 
-**Data Pipeline:**
-```python
-# Optimized TensorFlow data pipeline
-train_ds = tf.data.Dataset.from_tensor_slices((X_train, y_train))
-    .map(parse_function, num_parallel_calls=AUTOTUNE)
-    .cache()  # Cache in memory for fast re-use
-    .shuffle(buffer_size=1024)
-    .batch(32)
-    .prefetch(AUTOTUNE)
+```
+Step 1: Take the last convolutional layer output
+        (this is a 7x7 grid of 1280 feature maps)
+
+Step 2: Compute gradients of the prediction with respect to
+        these feature maps (how much each feature map affects the output)
+
+Step 3: Average the gradients across spatial dimensions
+        (get importance weight for each of the 1280 channels)
+
+Step 4: Multiply each feature map by its importance weight
+        and sum them up → raw heatmap (7x7)
+
+Step 5: Apply ReLU (keep only positive values)
+        (we only care about features that INCREASE the "fake" score)
+
+Step 6: Resize heatmap to match original face size
+
+Step 7: Apply color map (JET colormap):
+        Blue → Green → Yellow → Red
+        (low suspicion)       (high suspicion)
+
+Step 8: Overlay on original face image (60% heatmap + 40% original)
+        Only show where activation > threshold (50)
 ```
 
-**Training Hyperparameters:**
+### Visual Example:
+
+```
+Original Face        Grad-CAM Heatmap       Result
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│             │     │   🟡🔴🔴    │     │   ⬛🔴🔴    │
+│   😊        │  +  │   🟡🔴🟡    │  =  │   ⬛🔴⬛    │
+│             │     │   🟢🟢🟢    │     │   ⬛⬛⬛    │
+└─────────────┘     └─────────────┘     └─────────────┘
+
+Red areas = Model thinks this region is manipulated
+Blue areas = Model thinks this region is authentic
+```
+
+### Why is this important?
+
+```
+1. EXPLAINABILITY: Users can see WHY the model says "FAKE"
+2. TRUST: Instead of black-box "FAKE", we show evidence
+3. DEBUGGING: Helps identify if model is looking at right areas
+4. FORENSICS: Helps understand what manipulation technique was used
+```
+
+---
+
+## 📚 Training Details
+
+### Dataset: FaceForensics++
+
+```
+Source: 300 videos (150 real + 150 fake)
+Fake methods: Face2Face, FaceSwap, NeuralTextures, Deepfakes
+
+Processing:
+  300 videos × 20 frames each = 6,000 frames
+  After face detection & filtering = 3,428 usable face images
+
+Split:
+  Training: 2,742 images (80%)
+  Validation: 686 images (20%)
+```
+
+### Two-Stage Training:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  STAGE 1: Feature Extraction (Frozen Base)                      │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  What: Freeze EfficientNetB0, train only the top Dense layer    │
+│  Why:  Learn basic real/fake classification without              │
+│        destroying pre-trained ImageNet features                  │
+│                                                                 │
+│  Epochs: 10                                                     │
+│  Learning Rate: 0.001                                           │
+│  Trainable params: 1,281 (only Dense + bias)                    │
+│  Result: ~50% accuracy (barely better than random)              │
+│                                                                 │
+│  ⚠️ Stage 1 alone isn't enough because the frozen features      │
+│     weren't designed for deepfake detection                     │
+└─────────────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  STAGE 2: Fine-Tuning (Unfrozen Base)                           │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  What: Unfreeze ALL layers, train entire model with tiny LR     │
+│  Why:  Adapt ImageNet features to recognize deepfake artifacts  │
+│                                                                 │
+│  Epochs: 5                                                      │
+│  Learning Rate: 0.00001 (1e-5, very small!)                     │
+│  Trainable params: 4,008,829 (all layers)                       │
+│  BatchNorm layers: kept frozen (42,023 params)                  │
+│                                                                 │
+│  Results:                                                       │
+│    Epoch 1: 52.91% → Epoch 2: 71.74% → Epoch 3: 79.41%         │
+│    Epoch 4: 84.44% → Epoch 5: 87.31% ✅                         │
+│                                                                 │
+│  Why tiny LR? To avoid "catastrophic forgetting"                │
+│  (destroying the useful ImageNet knowledge)                     │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Why Two Stages?
+
+```
+ANALOGY: Teaching someone to be a deepfake detective
+
+Stage 1 = "Here's a magnifying glass (pre-trained features).
+           Just learn to say yes/no using what you already see."
+           
+Stage 2 = "Now, let's also teach you to notice NEW things
+           specific to deepfakes - subtle texture artifacts,
+           blending boundaries, unnatural skin patterns."
+```
+
+### Training Hyperparameters:
+
 | Parameter | Stage 1 | Stage 2 |
 |-----------|---------|---------|
 | Epochs | 10 | 5 |
-| Learning Rate | 0.001 | 1e-5 |
+| Learning Rate | 0.001 | 0.00001 |
 | Optimizer | Adam | Adam |
-| Loss Function | Binary Crossentropy | Binary Crossentropy |
+| Loss | Binary Crossentropy | Binary Crossentropy |
 | Batch Size | 32 | 32 |
-| Base Frozen | Yes | No |
+| Base Model | Frozen | Unfrozen |
+| BatchNorm | Frozen | Frozen |
 
-**Training Results:**
+### Final Model Stats:
 
-**Stage 1 (Frozen Base):**
 ```
-Epoch 1:  Loss: 0.7009, Accuracy: 51.16%
-Epoch 2:  Loss: 0.6995, Accuracy: 49.13%
-Epoch 3:  Loss: 0.6977, Accuracy: 50.08%
-Epoch 4:  Loss: 0.7017, Accuracy: 49.99%
-Epoch 5:  Loss: 0.6996, Accuracy: 49.99%
-Epoch 6:  Loss: 0.6990, Accuracy: 51.83%
-Epoch 7:  Loss: 0.6996, Accuracy: 48.25%
-Epoch 8:  Loss: 0.7012, Accuracy: 48.17%
-Epoch 9:  Loss: 0.7017, Accuracy: 50.52%
-Epoch 10: Loss: 0.6989, Accuracy: 50.00%
-```
-
-**Stage 2 (Fine-tuning):**
-```
-Epoch 1: Loss: 0.6996, Accuracy: 52.91%
-Epoch 2: Loss: 0.5885, Accuracy: 71.74%
-Epoch 3: Loss: 0.4988, Accuracy: 79.41%
-Epoch 4: Loss: 0.4171, Accuracy: 84.44%
-Epoch 5: Loss: 0.3647, Accuracy: 87.31% ✅ Best
+Total Parameters:    4,050,852
+Model File Size:     15.45 MB
+Input Size:          224 × 224 × 3
+Output:              Single float (0.0 to 1.0)
+Threshold:           0.45
+Final Accuracy:      87.31% (training), ~94% (testing)
+Inference Speed:     ~0.1s (GPU) / ~0.5s (CPU)
 ```
 
 ---
 
-## 📊 Results & Performance
+## 🐳 Deployment
 
-### **Performance Metrics**
+### Docker Setup:
 
-| Metric | Value |
-|--------|-------|
-| Final Training Accuracy | 87.31% |
-| Model Accuracy (Reported) | 94.2% |
-| Training Loss | 0.3647 |
-| Inference Time (GPU) | ~0.1 seconds |
-| Inference Time (CPU) | ~0.5 seconds |
-| Model Size | 15.45 MB |
-| Supported Formats | JPG, PNG, MP4, AVI, MOV |
-| Max File Size | 20 MB |
-
-### **Heatmap Interpretation**
-
-The Grad-CAM heatmap shows which regions of the face influenced the model's prediction:
-
-```
-Color Legend:
-🔵 Blue:   Low activation (authentic areas)
-🟢 Green:  Medium activation (neutral)
-🟡 Yellow: High activation (suspicious regions)
-🔴 Red:    Highest activation (likely manipulated)
-
-Thresholding:
-- Only regions with activation > 20% intensity shown
-- Removes "blue fog" background noise
-- Clearly highlights suspicious areas
-- 60% heatmap + 40% original image blend
-```
-
-### **Strengths**
-
-✅ High accuracy on FF++ dataset (94.2% reported)  
-✅ Fast inference speed with GPU acceleration  
-✅ Clear visual explanations via Grad-CAM heatmaps  
-✅ Supports multiple video formats and resolutions  
-✅ Scalable architecture for new deepfake techniques  
-✅ Modern web interface and browser extension  
-✅ RESTful API for easy integration  
-✅ Real-time processing capabilities  
-
-### **Limitations**
-
-⚠️ Trained on specific deepfake generation methods (Face2Face, FaceSwap, etc.)  
-⚠️ May have false positives on heavily compressed videos  
-⚠️ Requires clear facial visibility (min. 100×100 pixels)  
-⚠️ Performance varies with video quality and lighting  
-⚠️ Single face detection only (multi-face support in development)  
-⚠️ No audio-visual synchronization check (planned feature)  
-
----
-
-## 📁 File Structure
-
-```
-DeepFake_Video_Detection/
-│
-├── README.md                          # Project documentation
-├── LICENSE                            # MIT License
-├── requirements.txt                   # Python dependencies
-├── main.py                           # FastAPI backend (NEW)
-├── test_main.http                    # API test file
-├── .gitignore                        # Git ignore rules
-│
-├── DFVD.ipynb                        # Training notebook
-│                                     # - Data preparation
-│                                     # - Model training (Stage 1 & 2)
-│                                     # - Image testing with Grad-CAM
-│                                     # - Video testing
-│
-├── model/                            # Model directory (NEW)
-│   ├── fine_tuned_model_weights.weights.h5  # Trained model
-│   └── best_model_stage1.h5          # Stage 1 checkpoint
-│
-├── frontend/                         # Web interface (NEW)
-│   ├── index.html                   # Main UI layout
-│   ├── styles.css                   # Styling (responsive design)
-│   └── script.js                    # Frontend logic & API calls
-│
-├── browser_extension/                # Chrome Extension (NEW)
-│   ├── manifest.json                # Extension configuration
-│   ├── background.js                # Event handling
-│   ├── content.js                   # DOM manipulation
-│   ├── result.html                  # Results page
-│   ├── result.js                    # Results logic
-│   ├── icon.png                     # Extension icon
-│   └── modi-fake2.jpg               # Test image
-│
-└── static/                          # Static assets (optional)
-    ├── images/
-    ├── css/
-    └── js/
-```
-
----
-
-## 🌍 Deployment
-
-### **Option 1: Docker Deployment (Production)**
-
-**Dockerfile:**
 ```dockerfile
-FROM python:3.9-slim
+FROM python:3.10-slim
+
+# System deps: ffmpeg (audio extraction), libsndfile (audio reading)
+RUN apt-get update && apt-get install -y ffmpeg libsndfile1 libgl1 libglib2.0-0 git
 
 WORKDIR /app
-
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+COPY . /app
 
-COPY . .
-
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+EXPOSE 7860
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
 ```
 
-**Build and Run:**
-```bash
-# Build image
-docker build -t deepfake-detector:latest .
+### Deployment Options:
 
-# Run container
-docker run -d -p 8000:8000 \
-  -v $(pwd)/model:/app/model \
-  --name deepfake-detector \
-  deepfake-detector:latest
-
-# View logs
-docker logs -f deepfake-detector
+```
+1. LOCAL:          python main.py (port 8000)
+2. DOCKER:         docker build -t deepfake . && docker run -p 7860:7860 deepfake
+3. HUGGINGFACE:    Push to HF Spaces (auto-builds Docker, port 7860)
+4. AWS/GCP/Azure:  Deploy container to any cloud service
 ```
 
-### **Option 2: Cloud Deployment (AWS, GCP, Azure)**
+### Environment:
 
-**Heroku:**
-```bash
-heroku login
-heroku create your-app-name
-git push heroku main
+```
+PORT = 7860 (default, configurable via env variable)
+No database needed (stateless API)
+No external API keys needed
+Model weights included in repo (model/ folder)
 ```
 
-**AWS EC2:**
+---
+
+## 📁 Project Structure
+
+```
+DeepFake_Video/
+│
+├── main.py                    ← FastAPI backend (THE main file)
+│                                 - Model loading
+│                                 - File upload handling
+│                                 - Face detection (MediaPipe)
+│                                 - Prediction (EfficientNetB0)
+│                                 - Grad-CAM generation
+│                                 - Audio analysis routing
+│
+├── model/
+│   └── fine_tuned_model_weights.weights.h5   ← Trained video/image model
+│
+├── audio_deepfake/
+│   ├── __init__.py
+│   ├── audio_detector.py      ← Audio deepfake detection logic
+│   │                            (Wav2Vec2, PyTorch, safetensors)
+│   └── model/
+│       └── audio_model.safetensors  ← Trained audio model weights
+│
+├── frontend/
+│   ├── index.html             ← Web UI (4 sections: Home, Detection, Dashboard, About)
+│   ├── styles.css             ← Responsive CSS with modern design
+│   └── script.js              ← Upload logic, API calls, history, results display
+│
+├── browser_extension/
+│   ├── manifest.json          ← Extension config (Manifest V3)
+│   ├── background.js          ← Service worker (context menu, API calls)
+│   ├── content.js             ← Snipping tool overlay on web pages
+│   ├── popup.html/css/js      ← Extension popup UI
+│   ├── result.html/js         ← Results page (opens in new tab)
+│   └── deepfakeLogo.png       ← Extension icon
+│
+├── DFVD.ipynb                 ← Training notebook (Google Colab)
+├── Dockerfile                 ← Docker deployment config
+├── requirements.txt           ← Python dependencies
+├── .dockerignore              ← Files to exclude from Docker
+└── README.md                  ← This file (Interview revision guide)
+```
+
+---
+
+## 💡 Key Interview Questions & Answers
+
+### Q1: "Tell me about your project" (STAR format)
+
+> **S:** Deepfake videos are spreading misinformation on social media. People can't tell real from fake.
+> **T:** Build an accessible AI tool that anyone can use to verify media authenticity before sharing.
+> **A:** Used EfficientNetB0 with transfer learning on FaceForensics++ dataset. Added Grad-CAM for explainability, Wav2Vec2 for audio detection. Built FastAPI backend, web UI, and Chrome extension.
+> **R:** Achieved 87% accuracy, real-time inference, multi-modal detection (video + audio), and deployed via Docker.
+
+---
+
+### Q2: "Why EfficientNetB0 and not ResNet or VGG?"
+
+> - **Smaller model size** (15MB vs 100MB+ for VGG)
+> - **Faster inference** (important for real-time web app)
+> - **Better accuracy-per-parameter** (compound scaling)
+> - **Still accurate enough** for binary classification task
+> - Good balance of **speed vs accuracy** for deployment on limited resources
+
+---
+
+### Q3: "What is Transfer Learning and why did you use it?"
+
+> Transfer learning reuses a model pre-trained on a large dataset (ImageNet, 14M images) for a new task.
+> 
+> **Why:** We only had 3,428 face images. Training from scratch would overfit badly. By reusing ImageNet features (edges, textures, patterns), we only needed to teach the model "what makes a face fake" on top of existing knowledge.
+
+---
+
+### Q4: "What is Grad-CAM and why is it important?"
+
+> Grad-CAM generates a heatmap showing which regions of the image the model focused on.
+> 
+> **Why important:**
+> - Makes the AI **explainable** (not a black box)
+> - Users can **see WHERE** manipulation happened
+> - Builds **trust** in the system
+> - Helps in **forensic analysis** of deepfakes
+
+---
+
+### Q5: "How do you handle videos vs images?"
+
+> - **Images:** Process directly (single frame)
+> - **Videos:** Extract 5 evenly-spaced key frames, process each independently, average the scores for final verdict
+> - **Audio in videos:** Extract audio track using FFmpeg, run through separate Wav2Vec2 model
+> - This gives both **visual** and **audio** deepfake detection for videos
+
+---
+
+### Q6: "What is the threshold 0.45 and why not 0.5?"
+
+> The model outputs a score between 0 (real) and 1 (fake). We use 0.45 instead of 0.5 to be slightly more sensitive to fakes (catches more manipulated content at the cost of rare false positives). This is a design choice favoring **safety over convenience**.
+
+---
+
+### Q7: "How does the browser extension work?"
+
+> - Built with **Manifest V3** (latest Chrome extension standard)
+> - Creates a **right-click context menu** on images/videos
+> - When clicked: fetches the media URL → sends to our FastAPI backend → shows result in new tab
+> - Also has a **snipping tool**: captures screen area → crops → analyzes
+> - Uses `chrome.storage.local` for passing data between background worker and result page
+
+---
+
+### Q8: "What challenges did you face?"
+
+> 1. **MediaPipe initialization** - had to initialize face detection globally (not per-request) for performance
+> 2. **Stage 1 training only got 50%** - learned that frozen base alone can't learn deepfake features, needed fine-tuning
+> 3. **Audio extraction from video** - used FFmpeg subprocess with timeout to avoid hanging
+> 4. **Large model loading time** - solved by loading once at startup, not per-request
+> 5. **CORS issues** - browser extension couldn't talk to backend without proper CORS middleware
+> 6. **File size handling** - added 20MB limit check both client-side and server-side
+
+---
+
+### Q9: "What are the limitations?"
+
+> - Only trained on specific deepfake methods (Face2Face, FaceSwap, etc.)
+> - Needs clear face visibility (min ~100x100 pixels)
+> - Single face detection only (picks first face if multiple)
+> - Compressed videos may cause false positives
+> - No temporal analysis (doesn't track face movement across frames)
+> - Requires internet connection (backend must be running)
+
+---
+
+### Q10: "How would you improve this project?"
+
+> - Add **temporal analysis** (LSTM/3D CNN) to catch flickering/inconsistency across frames
+> - Train on **more diverse datasets** (Celeb-DF, DFDC) for better generalization
+> - Add **multi-face detection** (analyze all faces in a frame)
+> - **Model quantization** (int8/float16) for faster mobile deployment
+> - Add **lip-sync detection** (audio-visual mismatch)
+> - Implement **ensemble models** (multiple models voting together)
+> - Add **real-time video streaming** analysis
+
+---
+
+### Q11: "Explain the FastAPI backend architecture"
+
+> - **Single file** (`main.py`) handles everything
+> - **Startup:** Loads both models (video + audio) into memory
+> - **Endpoint:** `POST /predict` accepts multipart file upload
+> - **Routing:** Detects file type by extension → routes to appropriate processor
+> - **Processing:** Uses temp files (auto-cleaned), MediaPipe for face detection
+> - **Response:** Returns JSON with verdict, confidence, and base64 heatmaps
+> - **Static serving:** Also serves the frontend HTML/CSS/JS
+> - **CORS:** Enabled for all origins (browser extension compatibility)
+
+---
+
+### Q12: "What is MediaPipe and why use it for face detection?"
+
+> MediaPipe is Google's framework for real-time ML pipelines.
+> 
+> **Why for face detection:**
+> - Very fast (real-time on CPU)
+> - Lightweight (no GPU needed for detection)
+> - Returns bounding box coordinates
+> - High accuracy for frontal faces
+> - Easy to integrate (few lines of code)
+> - Alternative would be MTCNN or dlib (slower)
+
+---
+
+## 📋 Quick Revision Cheat Sheet
+
+### One-Page Summary:
+
+```
+PROJECT: DeepFake Video Detection
+TAGLINE: "Detect Before Share on Social Media"
+
+WHAT IT DOES:
+  Upload image/video/audio → Detects if REAL or FAKE → Shows WHERE manipulated
+
+TECH USED:
+  Backend:    FastAPI + Python
+  Video ML:   EfficientNetB0 + TensorFlow + Grad-CAM + MediaPipe
+  Audio ML:   Wav2Vec2 + PyTorch + HuggingFace Transformers
+  Frontend:   Vanilla HTML/CSS/JS
+  Extension:  Chrome Manifest V3
+  Deploy:     Docker + HuggingFace Spaces
+
+KEY NUMBERS:
+  Accuracy:      87.31% (train), ~94% (test)
+  Model Size:    15.45 MB (video) + audio model
+  Inference:     ~0.1s GPU, ~0.5s CPU
+  Max Upload:    20 MB
+  Video Frames:  5 key frames analyzed
+  Threshold:     0.45 (>= FAKE, < REAL)
+  Dataset:       3,428 face images from 300 videos
+
+KEY CONCEPTS:
+  Transfer Learning → Reuse ImageNet knowledge
+  Fine-Tuning      → Adapt all layers with tiny learning rate
+  Grad-CAM         → Visual explanation of model decision
+  Binary Classification → Output single probability (Real vs Fake)
+  Two-Stage Training → Freeze then unfreeze base model
+
+ARCHITECTURE FLOW:
+  File Upload → Type Detection → Face Detection → Preprocessing →
+  Model Inference → Grad-CAM → JSON Response
+
+UNIQUE FEATURES:
+  ✅ Multi-modal (video + image + audio)
+  ✅ Visual explanations (Grad-CAM heatmaps)
+  ✅ Browser extension (right-click analyze)
+  ✅ No database needed (stateless)
+  ✅ Single endpoint API
+  ✅ Docker-ready deployment
+```
+
+### Keywords to Remember:
+
+```
+EfficientNetB0, Transfer Learning, Fine-Tuning, Grad-CAM,
+MediaPipe, FastAPI, Wav2Vec2, Binary Classification, Sigmoid,
+GlobalAveragePooling, Dropout, FaceForensics++, Manifest V3,
+Service Worker, OffscreenCanvas, Base64, CORS, Uvicorn,
+Safetensors, FFmpeg, Softmax, Two-Stage Training
+```
+
+### Common Follow-up Topics:
+
+```
+→ Overfitting: We use Dropout(0.3) + small dataset + early stopping
+→ Why not CNN from scratch: Not enough data, would overfit
+→ Why FastAPI over Flask: Async support, auto-docs, type validation, faster
+→ Why not React for frontend: Keep it simple, no build step needed
+→ How to scale: Add load balancer, multiple uvicorn workers, GPU instances
+→ Security: File size validation, temp file cleanup, CORS config, no data stored
+```
+
+---
+
+## 🚀 How to Run Locally
+
 ```bash
-# SSH into instance
-ssh -i key.pem ubuntu@your-ip
-
-# Install dependencies
-sudo apt update
-sudo apt install python3-pip python3-venv
-
-# Clone and setup
-git clone your-repo
+# 1. Clone the repo
+git clone https://github.com/thesushpatil/DeepFake_Video_Detection.git
 cd DeepFake_Video_Detection
-python3 -m venv venv
-source venv/bin/activate
+
+# 2. Create virtual environment
+python -m venv venv
+venv\Scripts\activate   # Windows
+
+# 3. Install dependencies
 pip install -r requirements.txt
 
-# Run with Gunicorn
-gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app
-```
-
-**Google Cloud Run:**
-```bash
-gcloud run deploy deepfake-detector \
-  --source . \
-  --platform managed \
-  --memory 4Gi \
-  --timeout 300
-```
-
-### **Option 3: Local Development**
-
-```bash
-# Terminal 1: Start backend
+# 4. Run the server
 python main.py
+# Server starts at http://127.0.0.1:8000
 
-# Terminal 2 (Optional): Run with hot-reload
-uvicorn main:app --reload
-
-# Browser: Open http://127.0.0.1:8000
+# 5. Open browser → http://127.0.0.1:8000
+# 6. Upload any image/video/audio to test
 ```
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! Please follow these guidelines:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-### **Development Guidelines**
-
-- Follow PEP 8 style guide
-- Add comments and docstrings
-- Test on both CPU and GPU
-- Include performance benchmarks
-- Update README if adding features
-- Test browser extension on Chrome 95+
-
-### **Areas for Contribution**
-
-- 🎯 Multi-face detection and analysis
-- 🎬 Real-time streaming video analysis
-- 📱 Mobile app development
-- 🌍 Multi-language support
-- 📊 Advanced analytics dashboard
-- 🚀 Model optimization (quantization, ONNX)
-- 🔐 Enhanced security features
-- 📝 Documentation improvements
-
----
-
-## 📚 References & Citations
-
-### **Key Papers**
-
-1. **EfficientNet**: Tan & Le, 2019
-   - "EfficientNet: Rethinking Model Scaling for CNNs"
-   - https://arxiv.org/abs/1905.11946
-
-2. **FaceForensics++**: Rössler et al., 2018
-   - "FaceForensics++: Learning to Detect Manipulated Facial Images"
-   - https://arxiv.org/abs/1901.08971
-
-3. **Grad-CAM**: Selvaraju et al., 2016
-   - "Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization"
-   - https://arxiv.org/abs/1610.02055
-
-4. **MediaPipe**: Google, 2020
-   - "MediaPipe: A Framework for Building Multimodal Machine Learning Pipelines"
-   - https://arxiv.org/abs/2006.03131
-
-### **Datasets**
-
-- **FaceForensics++**: https://github.com/ondyari/FaceForensics
-- **DFDC**: https://www.kaggle.com/c/deepfake-detection-challenge
-- **Celeb-DF**: https://github.com/yuezunli/celeb-deepfaceforensics
-
-### **Tools & Libraries**
-
-- TensorFlow: https://www.tensorflow.org/
-- FastAPI: https://fastapi.tiangolo.com/
-- OpenCV: https://opencv.org/
-- MediaPipe: https://mediapipe.dev/
-
----
-
-## 🔒 Privacy & Security
-
-✅ **No Data Collection**: All processing happens locally  
-✅ **Model Weights**: Open-source for transparency  
-✅ **GDPR Compliant**: No personal data storage  
-✅ **Secure Communication**: HTTPS support for production  
-✅ **File Cleanup**: Automatic deletion of temporary files  
-
----
-
-## 🎓 Learning Concepts
-
-### **Transfer Learning**
-- Leveraging pre-trained EfficientNetB0 from ImageNet
-- Fine-tuning for specific deepfake detection task
-- Reduces training time and data requirements significantly
-
-### **Grad-CAM (Gradient-weighted Class Activation Mapping)**
-- Explains model predictions visually
-- Shows which image regions influence classification
-- Helps identify manipulation hotspots
-- Increases model transparency and trust
-
-### **Two-Stage Training**
-- **Stage 1**: Preserve pre-trained features, train classification head
-- **Stage 2**: Adapt all layers with extremely low learning rate
-- Prevents catastrophic forgetting of ImageNet knowledge
-- Improves generalization on new tasks
-
----
-
-## 🚀 Future Enhancements
-
-### **Model Improvements**
-- [ ] Multi-scale face analysis (pyramid approach)
-- [ ] Temporal analysis for videos (LSTM/3D CNN)
-- [ ] Ensemble models for higher accuracy
-- [ ] Support for emerging deepfake techniques
-- [ ] Audio-visual synchronization detection
-
-### **Performance Optimization**
-- [ ] Model quantization (int8, float16)
-- [ ] ONNX export for cross-platform compatibility
-- [ ] TensorFlow Lite for mobile devices
-- [ ] Edge device deployment (Raspberry Pi, TPU)
-- [ ] Batch processing optimization
-
-### **Feature Additions**
-- [ ] Multi-face detection and individual scoring
-- [ ] Blockchain verification integration
-- [ ] Real-time streaming analysis
-- [ ] Community crowdsourced labeling
-- [ ] Metadata forensics analysis
-- [ ] Deep fake generation detection
-- [ ] API rate limiting and authentication
-- [ ] Advanced filtering options
-
-### **Platform Expansion**
-- [ ] Firefox browser extension
-- [ ] Safari browser extension
-- [ ] Mobile app (iOS/Android)
-- [ ] Desktop application (Electron)
-- [ ] Command-line interface (CLI)
-
----
-
-## 📧 Contact & Support
-
-**Author**: Sushant Patil  
-**GitHub**: [@thesushpatil](https://github.com/thesushpatil)  
-**Email**: sushantpatil6217@gmail.com  
-
-**Support Channels**:
-- 🐛 [Report Issues](https://github.com/thesushpatil/DeepFake_Video_Detection/issues)
-- 💬 [GitHub Discussions](https://github.com/thesushpatil/DeepFake_Video_Detection/discussions)
-- 📝 [Documentation](https://github.com/thesushpatil/DeepFake_Video_Detection/wiki)
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-```
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-```
+MIT License - Free to use, modify, and distribute.
 
 ---
 
-## ⭐ Show Your Support
+## 👥 Team
 
-If this project helped you detect deepfakes and protect against misinformation, please:
-
-- ⭐ **Star this repository** on GitHub
-- 🔗 **Share** with your network
-- 🐛 **Report bugs** and suggest features
-- 🤝 **Contribute** improvements
-- 📢 **Spread awareness** about deepfake risks
-
-```
-Your support motivates us to keep improving this project! 🙌
-Together, we can combat misinformation and protect digital authenticity.
-```
+| Name | Role |
+|------|------|
+| Sushant Patil | Lead Developer (CV & DL) |
+| Anuj Waghmare | Data Scientist (ML & Data) |
+| Vilas Rathod | Backend Developer (API & Cloud) |
+| Devraj Powar | UX Designer (Frontend & Extension) |
 
 ---
 
-<div align="center">
+> **Tip for interviews:** Practice explaining the STAR section out loud in 2 minutes. Then pick 2-3 Q&As that you feel most confident about and prepare detailed answers with follow-ups.
 
-### 🎬 Made with ❤️ to Combat Misinformation & Protect Digital Authenticity 🎬
-
-**Detect Before Share • Verify Before Spread • Protect Digital Truth**
-
-*Last Updated: 2026-05-21*
-
-[⬆ Back to Top](#-deepfake-video-detection)
-
-</div>
+*Last Updated: July 2026*
